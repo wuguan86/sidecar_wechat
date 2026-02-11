@@ -1,0 +1,31 @@
+java:
+  receive_url: ""
+  timeout_seconds: 5
+  retry_max: 3
+  retry_backoff_base_seconds: 0.6
+
+window:
+  class_name: "mmui::MainWindow"
+  name: "微信"
+
+listener:
+  scan_interval_seconds: 1.2
+  scan_jitter_seconds: 0.6
+  unread_max_per_round: 5
+  message_scan_limit: 10
+
+executor:
+  send_delay_min_seconds: 0.5
+  send_delay_max_seconds: 2.0
+  click_move_min_seconds: 0.18
+  click_move_max_seconds: 0.55
+
+server:
+  host: "127.0.0.1"
+  port: 51234
+
+logging:
+  file: "wechat_bridge.log"
+  level: "INFO"
+  max_bytes: 10485760
+  backup_count: 3
