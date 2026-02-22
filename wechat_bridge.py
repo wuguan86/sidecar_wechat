@@ -458,6 +458,9 @@ class WeChatUI:
         name = name.strip()
         if not name:
             return ""
+        # 移除 [1条] 这种格式 (新版微信)
+        name = re.sub(r"\[\d+条\]", "", name)
+        
         parts = [part.strip() for part in name.splitlines() if part.strip()]
         if parts:
             name = parts[0]
@@ -689,6 +692,15 @@ class WeChatUI:
                 return target
         except Exception:
             pass
+
+        # 策略0.5：尝试英文版 'Session'
+        try:
+            target = auto.ListControl(searchFromControl=window, searchDepth=12, Name="Session")
+            if target and target.Exists(0, 0):
+                self._logger.debug("_locate_session_list 通过 Name='Session' 找到控件")
+                return target
+        except Exception:
+            pass
             
         candidates = []
         # 增加搜索深度到 25，因为控件树显示 ListControl 在第 10+ 层
@@ -710,11 +722,11 @@ class WeChatUI:
             if left > 280: # 稍微放宽一点限制，原为 200，实际为 80，安全
                 continue
             
-            # 增加检查：是否有 ListItem 子节点
+            # 增加检查：是否有 ListItem 子节点 (Relaxed: 只要有子节点即可，不强制要求 ListItemControl)
             try:
-                items = auto.ListItemControl(searchFromControl=ctrl, searchDepth=2)
-                if not items.Exists(0, 0):
-                     # 如果没有 ListItem，可能不是我们要的列表
+                children = ctrl.GetChildren()
+                if not children:
+                     # 如果没有子节点，肯定不是列表
                      continue
             except Exception:
                 pass
@@ -739,6 +751,15 @@ class WeChatUI:
             target = auto.ListControl(searchFromControl=window, searchDepth=15, Name="消息")
             if target and target.Exists(0, 0):
                 self._logger.debug("_locate_message_list 通过 Name='消息' 找到控件")
+                return target
+        except Exception:
+            pass
+
+        # 策略0.5：尝试英文版 'Message'
+        try:
+            target = auto.ListControl(searchFromControl=window, searchDepth=15, Name="Message")
+            if target and target.Exists(0, 0):
+                self._logger.debug("_locate_message_list 通过 Name='Message' 找到控件")
                 return target
         except Exception:
             pass
@@ -846,13 +867,28 @@ class WeChatUI:
         # 未读判断说明（中文）：
         # - 不使用 OCR，只依赖 UIA 文本属性。
         # - 微信未读红点/数字徽标通常以 TextControl 形式存在（Name 为纯数字），或在条目 Name 中包含“x条新消息/未读”。
+        # - 新版微信 (2024+)：Name 中包含 [1条] 或 [99+条] 格式
         item_name = getattr(item, "Name", "") or ""
+
+        # [Fix] 过滤掉“服务号”、“订阅号”，防止进入聚合列表后无法退出
+        # 这些聚合号通常不需要自动回复，且进入后 UI 结构变化会导致卡死
+        if item_name in ("服务号", "订阅号", "Subscription Accounts", "订阅号消息"):
+            # self._logger.debug(f"Ignored unread session (Subscription Folder): {item_name}")
+            return False
+        
+        # 1. 检查新版格式 [x条]
+        if re.search(r"\[\d+条\]", item_name):
+            self._logger.info(f"DEBUG: Item Name hit unread pattern [x条]: {item_name.replace('\n', ' ')}")
+            return True
+            
+        # 2. 检查旧版格式 "x条新消息" 或 "未读"
         if re.search(r"(\d+条新消息|未读)", item_name):
-            # self._logger.info(f"DEBUG: Item Name hit unread: {item_name}")
+            self._logger.info(f"DEBUG: Item Name hit unread pattern (old): {item_name.replace('\n', ' ')}")
             return True
 
-        # 降低深度到 5，防止遍历耗时过长导致卡顿
-        for ctrl in _iter_descendants(item, max_depth=5):
+        # 3. 递归查找子控件中的数字
+        # 增加深度到 7，防止层级过深漏掉
+        for ctrl in _iter_descendants(item, max_depth=7):
             ct = _control_type_name(ctrl)
             # 有些版本红点可能是 GroupControl 或其他，只要 Name 是数字就可能是
             text = getattr(ctrl, "Name", "") or ""
@@ -860,11 +896,43 @@ class WeChatUI:
                 continue
                 
             if re.fullmatch(r"\d+", text.strip()):
-                # self._logger.info(f"DEBUG: Found numeric indicator: {text} in {ct}")
+                self._logger.info(f"DEBUG: Found numeric indicator: {text} in {ct}")
                 return True
             if "条新消息" in text or "未读" in text:
-                # self._logger.info(f"DEBUG: Found text indicator: {text} in {ct}")
+                self._logger.info(f"DEBUG: Found text indicator: {text} in {ct}")
                 return True
+        return False
+
+    def _check_and_exit_subscription_folder(self, window: Any) -> bool:
+        """
+        检测是否误入“服务号”或“订阅号”文件夹，如果是则点击返回。
+        返回 True 表示已执行返回操作。
+        """
+        if auto is None or window is None:
+            return False
+            
+        # 常见聚合号名称
+        targets = ["服务号", "订阅号", "Subscription Accounts", "订阅号消息"]
+        
+        for name in targets:
+            try:
+                # 寻找名为“服务号”等的按钮 (Back Button)
+                # searchDepth=12 足够覆盖顶部导航栏
+                btn = auto.ButtonControl(searchFromControl=window, searchDepth=12, Name=name)
+                if btn.Exists(0, 0):
+                    # 进一步验证位置：必须在左上角区域
+                    # 微信左侧列表宽度通常 < 300，顶部高度 < 150
+                    rect = getattr(btn, "BoundingRectangle", None)
+                    bbox = _rect_to_bbox(rect) if rect else None
+                    if bbox:
+                        l, t, r, b = bbox
+                        if l < 350 and t < 200:
+                            self._logger.info(f"检测到订阅号/服务号返回按钮: {name}, 尝试点击返回")
+                            btn.Click(simulateMove=True)
+                            time.sleep(1.0) # 等待返回动画
+                            return True
+            except Exception:
+                pass
         return False
 
     def click_session_item(self, item: Any) -> Optional[str]:
@@ -883,7 +951,13 @@ class WeChatUI:
                     item.Click()
                 except Exception:  # noqa: BLE001
                     return name or None
+            
+            # [Fix] 检查是否误入“服务号/订阅号”内部，如果是则点击返回
             window = self.get_main_window()
+            if self._check_and_exit_subscription_folder(window):
+                self._logger.warning(f"误入聚合号文件夹 [{name}]，已自动返回")
+                return None
+
             current = self.get_current_chat_title(window) if window is not None else None
             current_name = self._normalize_contact_name(current or "")
             return current_name or name or None
@@ -1432,17 +1506,24 @@ class Listener:
                 unread = self._ui.find_unread_sessions()
                 self._logger.info("发现 %d 个未读会话", len(unread))
                 
-                for item in unread:
-                    contact = self._ui.click_session_item(item)
-                    if not contact:
-                        contact = self._ui.get_current_chat_title(self._ui.get_main_window())
-                    contact = self._ui._normalize_contact_name(contact or "") or "unknown"
+                # 每次只处理一个未读会话，防止处理过程中列表刷新导致后续 item 失效或错位
+                if unread:
+                    item = unread[0]
+                    self._logger.info(f"本轮处理第一个未读会话 (共 {len(unread)} 个)")
                     
-                    # 点击后，模拟阅读时间，稍作停顿
-                    time.sleep(random.uniform(1.0, 2.5))
-                    
-                    self._fetch_and_report(contact)
-                
+                    try:
+                        contact = self._ui.click_session_item(item)
+                        if not contact:
+                            contact = self._ui.get_current_chat_title(self._ui.get_main_window())
+                        contact = self._ui._normalize_contact_name(contact or "") or "unknown"
+                        
+                        # 点击后，模拟阅读时间，稍作停顿
+                        time.sleep(random.uniform(1.0, 2.5))
+                        
+                        self._fetch_and_report(contact)
+                    except Exception as e:
+                        self._logger.error(f"处理未读会话时出错: {e}")
+
                 # 重新计算下一次扫描时间
                 interval = random.uniform(self._cfg.unread_scan_interval_min_seconds, self._cfg.unread_scan_interval_max_seconds)
                 self._next_unread_scan_time = now + interval
@@ -1457,6 +1538,7 @@ class Listener:
         try:
             contact = self._ui._normalize_contact_name(contact)
             if not contact:
+                self._logger.warning("Fetched contact name is empty, skipping report.")
                 return
             messages = self._ui.extract_latest_messages(contact)
             for msg in messages:
