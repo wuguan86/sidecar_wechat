@@ -14,6 +14,7 @@ import queue
 import random
 import re
 import subprocess
+import sys
 import threading
 import time
 from http import HTTPStatus
@@ -230,7 +231,33 @@ def load_config(config_path: str) -> BridgeConfig:
             pass
 
     if not os.path.isabs(cfg.log_file):
-        cfg = dataclasses.replace(cfg, log_file=os.path.join(config_dir, cfg.log_file))
+        # Determine target log path
+        log_path = os.path.join(config_dir, cfg.log_file)
+        
+        # Check if we should use AppData instead
+        use_appdata = False
+        # If packaged (frozen), we are likely in Program Files which is read-only
+        if getattr(sys, 'frozen', False):
+            use_appdata = True
+        # Or if the config directory is explicitly not writable
+        elif not os.access(config_dir, os.W_OK):
+            use_appdata = True
+            
+        if use_appdata:
+            appdata = os.getenv('APPDATA')
+            if appdata:
+                # Use a specific subdirectory for the application logs
+                # Ensure this matches the app name or use a generic safe name
+                log_dir = os.path.join(appdata, "ShijieAIAssistant", "logs")
+                try:
+                    os.makedirs(log_dir, exist_ok=True)
+                    log_path = os.path.join(log_dir, os.path.basename(cfg.log_file))
+                except Exception:
+                    # Fallback to temp dir if AppData creation fails
+                    import tempfile
+                    log_path = os.path.join(tempfile.gettempdir(), os.path.basename(cfg.log_file))
+
+        cfg = dataclasses.replace(cfg, log_file=log_path)
     return cfg
 
 
@@ -356,6 +383,19 @@ def _ensure_com_initialized(logger: logging.Logger) -> None:
 def _warmup_uia(logger: logging.Logger) -> None:
     if auto is None:
         return
+    
+    # 尝试开启系统级屏幕阅读器标志，以触发 Qt/微信 加载完整 UI 树
+    # 参见: https://doc.qt.io/qt-6/accessible-qwidget.html#accessibility-in-qt
+    try:
+        SPI_SETSCREENREADER = 0x0047
+        SPIF_SENDCHANGE = 0x0002
+        SPIF_UPDATEINIFILE = 0x0001
+        # SystemParametersInfoW(UINT uiAction, UINT uiParam, PVOID pvParam, UINT fWinIni);
+        ctypes.windll.user32.SystemParametersInfoW(SPI_SETSCREENREADER, 1, None, SPIF_UPDATEINIFILE | SPIF_SENDCHANGE)
+        logger.info("已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持")
+    except Exception as e:
+        logger.warning("设置 SPI_SETSCREENREADER 失败: %s", e)
+
     try:
         auto.GetRootControl()
     except Exception as e:  # noqa: BLE001
@@ -451,6 +491,7 @@ class WeChatUI:
         self._uia_lock = threading.RLock()
         self._cached_main = None
         self._tree_logged_handle = None
+        self._last_unread_debug_time = 0.0
 
     def _normalize_contact_name(self, name: str) -> str:
         if not name:
@@ -467,6 +508,9 @@ class WeChatUI:
         name = re.sub(r"\s+", " ", name).strip()
         name = re.sub(r"(?:\d+\s*条新消息|未读)$", "", name).strip()
         return name
+
+    def _brief_control(self, ctrl: Any) -> str:
+        return f"{_control_type_name(ctrl)}|{_safe_attr(ctrl, 'ClassName')}|{_safe_attr(ctrl, 'Name')}|{_rect_text(ctrl)}"
 
     def _get_wechat_pids(self) -> List[int]:
         pids = []
@@ -509,9 +553,10 @@ class WeChatUI:
         
         # 策略0：使用 Win32 API 快速查找 (避免 UIA 遍历挂死)
         try:
+            # 优先找完全匹配的 (ClassName + WindowName)
             hwnd = ctypes.windll.user32.FindWindowW(self._cfg.window_class_name, self._cfg.window_name)
             if hwnd and hwnd != 0:
-                self._logger.info(f"FindWindowW found handle: {hwnd}")
+                self._logger.info(f"FindWindowW found EXACT match handle: {hwnd}")
                 # 检查窗口是否挂起
                 if ctypes.windll.user32.IsHungAppWindow(hwnd):
                     self._logger.warning(f"Handle {hwnd} is HUNG (Not Responding). Skipping.")
@@ -526,6 +571,24 @@ class WeChatUI:
                         return window
                     else:
                         self._logger.warning("Window from handle exists check failed")
+            
+            # 如果没找到标准窗口，尝试找任何名为 "微信" 的窗口 (黑盒模式/类名变动)
+            # FindWindowW(lpClassName=None, lpWindowName=...)
+            hwnd_any = ctypes.windll.user32.FindWindowW(None, self._cfg.window_name)
+            if hwnd_any and hwnd_any != 0:
+                # 获取类名以供参考
+                buff = ctypes.create_unicode_buffer(256)
+                ctypes.windll.user32.GetClassNameW(hwnd_any, buff, 256)
+                found_class = buff.value
+                
+                self._logger.warning(f"检测到名为 '{self._cfg.window_name}' 的窗口，但类名为 '{found_class}' (预期: {self._cfg.window_class_name})")
+                
+                window = auto.ControlFromHandle(hwnd_any)
+                if window.Exists(0, 0):
+                    class_name = getattr(window, "ClassName", "")
+                    if class_name == self._cfg.window_class_name:
+                        return window
+                    self._logger.warning("窗口类名不匹配，忽略并继续搜索: %s", class_name)
         except Exception as e:
             self._logger.warning(f"Win32 FindWindow optimization failed: {e}")
 
@@ -581,8 +644,11 @@ class WeChatUI:
                 exists_loose = window_loose.Exists(0, 0)
                 self._logger.info(f"PID {pid} Exists (loose) result: {exists_loose}")
                 if exists_loose:
-                     self._logger.info("Found window (loose match) in PID %s", pid)
-                     return window_loose
+                    self._logger.info("Found window (loose match) in PID %s", pid)
+                    class_name = getattr(window_loose, "ClassName", "")
+                    if class_name == self._cfg.window_class_name:
+                        return window_loose
+                    self._logger.warning("窗口类名不匹配，忽略并继续搜索: %s", class_name)
             except Exception as e:
                 self._logger.warning("Check window for PID %s failed: %s", pid, e)
                 
@@ -638,6 +704,52 @@ class WeChatUI:
                 except Exception:  # noqa: BLE001
                     gname = ""
                 self._logger.info("WindowChild L2: %s | %s", _control_type_name(grand), gname)
+
+    def log_ready_snapshot(self, window: Any) -> None:
+        if window is None:
+            return
+        with self._uia_lock:
+            name = getattr(window, "Name", "") or ""
+            class_name = getattr(window, "ClassName", "") or ""
+            pid = getattr(window, "ProcessId", None)
+            handle = getattr(window, "NativeWindowHandle", None)
+            rect_text = _rect_text(window)
+            self._logger.info("主窗口就绪快照: Name=%s Class=%s PID=%s Handle=%s Rect=%s", name, class_name, pid, handle, rect_text)
+            try:
+                children = window.GetChildren() or []
+            except Exception:
+                children = []
+            brief = []
+            for child in children[:6]:
+                brief.append(f"{_control_type_name(child)}|{_safe_attr(child, 'Name')}")
+            if brief:
+                self._logger.info("主窗口前6个子控件: %s", brief)
+
+            session_list = self._locate_session_list(window)
+            if session_list is not None:
+                s_name = _safe_attr(session_list, "Name")
+                s_class = _safe_attr(session_list, "ClassName")
+                s_rect = _rect_text(session_list)
+                try:
+                    s_count = len(session_list.GetChildren() or [])
+                except Exception:
+                    s_count = -1
+                self._logger.info("会话列表控件: Class=%s Name=%s Rect=%s Children=%s", s_class, s_name, s_rect, s_count)
+            else:
+                self._logger.info("未找到会话列表控件")
+
+            message_list = self._locate_message_list(window)
+            if message_list is not None:
+                m_name = _safe_attr(message_list, "Name")
+                m_class = _safe_attr(message_list, "ClassName")
+                m_rect = _rect_text(message_list)
+                try:
+                    m_count = len(message_list.GetChildren() or [])
+                except Exception:
+                    m_count = -1
+                self._logger.info("消息列表控件: Class=%s Name=%s Rect=%s Children=%s", m_class, m_name, m_rect, m_count)
+            else:
+                self._logger.info("未找到消息列表控件")
 
     def guard_popups(self) -> None:
         if auto is None:
@@ -831,6 +943,54 @@ class WeChatUI:
                 self._logger.info(f"DEBUG: All List/Pane candidates in top 10 layers: {debug_list[:10]}...")
             except:
                 pass
+            try:
+                fallback_list = []
+                for root in roots:
+                    for ctrl in _iter_descendants(root, max_depth=10):
+                        ct = _control_type_name(ctrl)
+                        if ct not in ("GroupControl", "CustomControl", "PaneControl", "ListControl"):
+                            continue
+                        r = getattr(ctrl, "BoundingRectangle", None)
+                        b = _rect_to_bbox(r) if r else None
+                        if not b:
+                            continue
+                        w, h = b[2] - b[0], b[3] - b[1]
+                        if w < 300 or h < 200:
+                            continue
+                        if b[0] < 180:
+                            continue
+                        fallback_list.append(f"{ct}:{w}x{h}@{b[0]},{b[1]}|{_safe_attr(ctrl, 'ClassName')}|{_safe_attr(ctrl, 'Name')}")
+                if fallback_list:
+                    self._logger.info(f"DEBUG: Large candidates in right pane: {fallback_list[:8]}...")
+            except Exception:
+                pass
+            try:
+                class_hits = []
+                for root in roots:
+                    for ctrl in _iter_descendants(root, max_depth=12):
+                        ct = _control_type_name(ctrl)
+                        if ct not in ("GroupControl", "CustomControl", "PaneControl"):
+                            continue
+                        class_name = _safe_attr(ctrl, "ClassName")
+                        if "ChatDetailView" not in class_name and "ChatRoomView" not in class_name and "XView" not in class_name:
+                            continue
+                        r = getattr(ctrl, "BoundingRectangle", None)
+                        b = _rect_to_bbox(r) if r else None
+                        if not b:
+                            continue
+                        w, h = b[2] - b[0], b[3] - b[1]
+                        if w < 300 or h < 200:
+                            continue
+                        if b[0] < 180:
+                            continue
+                        class_hits.append((w * h, ctrl))
+                if class_hits:
+                    class_hits.sort(key=lambda x: x[0], reverse=True)
+                    best_alt = class_hits[0][1]
+                    self._logger.info("DEBUG: 使用右侧大控件作为消息根: %s", self._brief_control(best_alt))
+                    return best_alt
+            except Exception:
+                pass
             return None
             
         candidates.sort(key=lambda x: x[0], reverse=True)
@@ -861,46 +1021,89 @@ class WeChatUI:
                         unread_items.append(item)
                 except Exception:
                     continue
+            now = time.time()
+            if not unread_items and now - self._last_unread_debug_time > 15.0:
+                self._last_unread_debug_time = now
+                self._logger.info("未读为空: 会话列表子项数量=%s", len(children))
+                try:
+                    sample = [self._brief_control(item) for item in children[:6]]
+                    if sample:
+                        self._logger.info("会话列表前6项: %s", sample)
+                except Exception:
+                    pass
+                try:
+                    for item in children[:4]:
+                        indicators = []
+                        for ctrl in _iter_descendants(item, max_depth=4):
+                            text = getattr(ctrl, "Name", "") or ""
+                            if re.search(r"(\d+|未读|条新消息|new message|unread)", text):
+                                indicators.append(f"{_control_type_name(ctrl)}|{text}")
+                                if len(indicators) >= 4:
+                                    break
+                        if indicators:
+                            self._logger.info("未读特征命中(会话项): %s", indicators)
+                except Exception:
+                    pass
             return unread_items
 
     def _is_session_item_unread(self, item: Any) -> bool:
-        # 未读判断说明（中文）：
-        # - 不使用 OCR，只依赖 UIA 文本属性。
-        # - 微信未读红点/数字徽标通常以 TextControl 形式存在（Name 为纯数字），或在条目 Name 中包含“x条新消息/未读”。
-        # - 新版微信 (2024+)：Name 中包含 [1条] 或 [99+条] 格式
         item_name = getattr(item, "Name", "") or ""
+        item_rect = None
+        try:
+            item_rect = _rect_to_bbox(getattr(item, "BoundingRectangle", None))
+        except Exception:
+            item_rect = None
 
-        # [Fix] 过滤掉“服务号”、“订阅号”，防止进入聚合列表后无法退出
-        # 这些聚合号通常不需要自动回复，且进入后 UI 结构变化会导致卡死
         if item_name in ("服务号", "订阅号", "Subscription Accounts", "订阅号消息"):
-            # self._logger.debug(f"Ignored unread session (Subscription Folder): {item_name}")
             return False
         
-        # 1. 检查新版格式 [x条]
         if re.search(r"\[\d+条\]", item_name):
             self._logger.info(f"DEBUG: Item Name hit unread pattern [x条]: {item_name.replace('\n', ' ')}")
             return True
             
-        # 2. 检查旧版格式 "x条新消息" 或 "未读"
         if re.search(r"(\d+条新消息|未读)", item_name):
             self._logger.info(f"DEBUG: Item Name hit unread pattern (old): {item_name.replace('\n', ' ')}")
             return True
 
-        # 3. 递归查找子控件中的数字
-        # 增加深度到 7，防止层级过深漏掉
-        for ctrl in _iter_descendants(item, max_depth=7):
+        unread_text_keywords = ("未读", "条新消息", "new message", "unread")
+        unread_meta_keywords = ("badge", "unread", "reddot", "red-dot", "dot", "count", "notification")
+        for ctrl in _iter_descendants(item, max_depth=10):
             ct = _control_type_name(ctrl)
-            # 有些版本红点可能是 GroupControl 或其他，只要 Name 是数字就可能是
             text = getattr(ctrl, "Name", "") or ""
             if not text:
-                continue
-                
-            if re.fullmatch(r"\d+", text.strip()):
-                self._logger.info(f"DEBUG: Found numeric indicator: {text} in {ct}")
+                text = ""
+
+            if text:
+                if re.fullmatch(r"\d+", text.strip()):
+                    self._logger.info(f"DEBUG: Found numeric indicator: {text} in {ct}")
+                    return True
+                if any(k in text for k in unread_text_keywords):
+                    self._logger.info(f"DEBUG: Found text indicator: {text} in {ct}")
+                    return True
+                if text in ("●", "•", "·"):
+                    return True
+
+            class_name = getattr(ctrl, "ClassName", "") or ""
+            automation_id = getattr(ctrl, "AutomationId", "") or ""
+            meta = f"{class_name} {automation_id}".lower()
+            if any(k in meta for k in unread_meta_keywords):
                 return True
-            if "条新消息" in text or "未读" in text:
-                self._logger.info(f"DEBUG: Found text indicator: {text} in {ct}")
-                return True
+
+            if item_rect is not None:
+                try:
+                    rect = getattr(ctrl, "BoundingRectangle", None)
+                    bbox = _rect_to_bbox(rect) if rect is not None else None
+                except Exception:
+                    bbox = None
+                if bbox is not None:
+                    l, t, r, b = bbox
+                    w = r - l
+                    h = b - t
+                    il, it, ir, ib = item_rect
+                    if 6 <= w <= 24 and 6 <= h <= 24:
+                        if l >= il + (ir - il) * 0.55 and t <= it + (ib - it) * 0.6:
+                            if ct in ("ImageControl", "CustomControl", "GroupControl", "PaneControl"):
+                                return True
         return False
 
     def _check_and_exit_subscription_folder(self, window: Any) -> bool:
@@ -1294,6 +1497,22 @@ class WeChatUI:
             if not list_bbox: return []
 
             items = msg_list.GetChildren() or []
+            if not items:
+                fallback_items = []
+                for ctrl in _iter_descendants(msg_list, max_depth=10):
+                    class_name = _safe_attr(ctrl, "ClassName")
+                    if not re.search(r"Chat.*ItemView", class_name):
+                        continue
+                    rect = getattr(ctrl, "BoundingRectangle", None)
+                    bbox = _rect_to_bbox(rect) if rect is not None else None
+                    if bbox is None:
+                        continue
+                    left, top, right, bottom = bbox
+                    if left < list_bbox[0] or right > list_bbox[2] or top < list_bbox[1] or bottom > list_bbox[3]:
+                        continue
+                    fallback_items.append((top, ctrl))
+                fallback_items.sort(key=lambda x: x[0])
+                items = [it[1] for it in fallback_items]
             if not items: return []
 
             collected_messages = []
@@ -1767,6 +1986,14 @@ def self_test(cfg: BridgeConfig, logger: logging.Logger) -> int:
         _ensure_com_initialized(logger)
         _warmup_uia(logger)
         ui = WeChatUI(cfg, logger)
+        
+        # Self-test 也需要检查黑盒模式，并给予提示
+        win = ui.get_main_window()
+        if win:
+            class_name = getattr(win, "ClassName", "")
+            if class_name != cfg.window_class_name:
+                logger.warning(f"Self-test 检测到 '黑盒' 微信 (ClassName={class_name})，正式运行会自动 Kill")
+                
         poller = Poller(ui, logger)
 
     server = CommandServer(cfg.server_host, cfg.server_port, ui, poller, logger)
@@ -1780,9 +2007,18 @@ def self_test(cfg: BridgeConfig, logger: logging.Logger) -> int:
 
 def main() -> int:
     import argparse
+    import sys
+
+    default_config = "config.yaml"
+    if getattr(sys, "frozen", False):
+        # 如果是打包后的环境，配置文件默认在 exe 同级目录
+        default_config = os.path.join(os.path.dirname(sys.executable), "config.yaml")
+    else:
+        # 如果是源码运行环境，配置文件在脚本同级目录
+        default_config = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.yaml")
 
     parser = argparse.ArgumentParser(prog="wechat_bridge", add_help=True)
-    parser.add_argument("--config", default=os.path.join(os.path.dirname(__file__), "config.yaml"))
+    parser.add_argument("--config", default=default_config)
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--self-test", action="store_true")
     parser.add_argument("--inspect", action="store_true")
@@ -1808,6 +2044,62 @@ def main() -> int:
             pass
 
     ui = WeChatUI(cfg, logger)
+
+    def wait_for_wechat_window() -> None:
+        last_tip_time = 0.0
+        last_state_time = 0.0
+        last_flag_time = 0.0
+        while True:
+            if time.time() - last_flag_time > 20.0:
+                _warmup_uia(logger)
+                last_flag_time = time.time()
+            win = ui.get_main_window()
+            if win is not None:
+                class_name = getattr(win, "ClassName", "")
+                if class_name == cfg.window_class_name:
+                    try:
+                        children = win.GetChildren() or []
+                    except Exception:
+                        children = []
+                    if len(children) > 0:
+                        logger.info("微信主窗口已就绪: ClassName=%s", class_name)
+                        try:
+                            ui.log_ready_snapshot(win)
+                        except Exception:
+                            pass
+                        return
+                    if time.time() - last_state_time > 4.0:
+                        logger.info("检测到微信窗口，但控件树未就绪，等待中...")
+                        last_state_time = time.time()
+                else:
+                    if time.time() - last_state_time > 4.0:
+                        logger.warning("检测到微信窗口类名异常: %s，等待你手动重启微信", class_name)
+                        last_state_time = time.time()
+                    ui._cached_main = None
+                    ui._tree_logged_handle = None
+            else:
+                if time.time() - last_tip_time > 6.0:
+                    logger.info("未检测到微信窗口，请手动启动并登录微信")
+                    last_tip_time = time.time()
+            time.sleep(1.5)
+    
+    # 启动前检查环境
+    try:
+        logger.info("检查微信环境状态...")
+        win = ui.get_main_window()
+        if win:
+            class_name = getattr(win, "ClassName", "")
+            # 只要类名不匹配配置的类名，就认为是异常/黑盒
+            if class_name != cfg.window_class_name:
+                logger.warning(f"检测到黑盒/异常微信 (ClassName={class_name} != {cfg.window_class_name})，请手动关闭微信后再启动。")
+                ui._cached_main = None
+                ui._tree_logged_handle = None
+            else:
+                logger.info(f"检测到正常的微信窗口 (ClassName={class_name})")
+    except Exception as e:
+        logger.warning(f"环境检查异常: {e}")
+
+    wait_for_wechat_window()
     
     # 初始化主动上报组件
     java_client = JavaClient(cfg, logger)
@@ -1822,6 +2114,13 @@ def main() -> int:
     logger.info("wechat_bridge 已启动 (监听模式)")
     try:
         while True:
+            # 增加对 ui 是否就绪的判断，如果找不到窗口或者窗口无效，则只做等待
+            # listener.process_cycle 内部其实调用 ui.find_unread_sessions 也会找窗口
+            # 但如果微信没启动，我们希望打印一些友好的日志，而不是频繁报错
+            
+            # 简单的策略：直接调用 process_cycle，依靠内部的异常处理和日志
+            # 但为了避免刷屏，如果 process_cycle 发现没窗口，可以 sleep 久一点
+            
             listener.process_cycle()
             _sleep_with_jitter(cfg.scan_interval_seconds, cfg.scan_jitter_seconds)
     except KeyboardInterrupt:
