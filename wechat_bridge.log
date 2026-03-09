@@ -1,0 +1,977 @@
+2026-03-08 16:19:47,686 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-08 16:19:47,772 [INFO] [MainThread] 检查微信环境状态...
+2026-03-08 16:19:47,772 [INFO] [MainThread] Debug: _find_main_window start (Optimized)
+2026-03-08 16:19:47,773 [WARNING] [MainThread] 检测到名为 '微信' 的窗口，但类名为 'Chrome_WidgetWin_0' (预期: mmui::MainWindow)
+2026-03-08 16:19:47,781 [WARNING] [MainThread] 窗口类名不匹配，忽略并继续搜索: Chrome_WidgetWin_0
+2026-03-08 16:19:47,781 [INFO] [MainThread] Checking Global Window Exists...
+2026-03-08 16:19:48,375 [INFO] [MainThread] Found WeChat PIDs: [13792, 13716, 13804, 11092]
+2026-03-08 16:19:48,375 [INFO] [MainThread] Checking PID: 13792
+2026-03-08 16:19:48,376 [INFO] [MainThread] Creating WindowControl for PID 13792
+2026-03-08 16:19:48,376 [INFO] [MainThread] Checking Exists for PID 13792
+2026-03-08 16:19:48,581 [INFO] [MainThread] PID 13792 Exists result: False
+2026-03-08 16:19:48,581 [INFO] [MainThread] Creating WindowControl (loose) for PID 13792
+2026-03-08 16:19:48,581 [INFO] [MainThread] Checking Exists (loose) for PID 13792
+2026-03-08 16:19:48,770 [INFO] [MainThread] PID 13792 Exists (loose) result: False
+2026-03-08 16:19:48,770 [INFO] [MainThread] Checking PID: 13716
+2026-03-08 16:19:48,771 [INFO] [MainThread] Creating WindowControl for PID 13716
+2026-03-08 16:19:48,771 [INFO] [MainThread] Checking Exists for PID 13716
+2026-03-08 16:19:48,925 [INFO] [MainThread] PID 13716 Exists result: False
+2026-03-08 16:19:48,925 [INFO] [MainThread] Creating WindowControl (loose) for PID 13716
+2026-03-08 16:19:48,925 [INFO] [MainThread] Checking Exists (loose) for PID 13716
+2026-03-08 16:19:49,091 [INFO] [MainThread] PID 13716 Exists (loose) result: False
+2026-03-08 16:19:49,092 [INFO] [MainThread] Checking PID: 13804
+2026-03-08 16:19:49,092 [INFO] [MainThread] Creating WindowControl for PID 13804
+2026-03-08 16:19:49,092 [INFO] [MainThread] Checking Exists for PID 13804
+2026-03-08 16:19:49,248 [INFO] [MainThread] PID 13804 Exists result: False
+2026-03-08 16:19:49,248 [INFO] [MainThread] Creating WindowControl (loose) for PID 13804
+2026-03-08 16:19:49,248 [INFO] [MainThread] Checking Exists (loose) for PID 13804
+2026-03-08 16:19:49,398 [INFO] [MainThread] PID 13804 Exists (loose) result: False
+2026-03-08 16:19:49,399 [INFO] [MainThread] Checking PID: 11092
+2026-03-08 16:19:49,399 [INFO] [MainThread] Creating WindowControl for PID 11092
+2026-03-08 16:19:49,399 [INFO] [MainThread] Checking Exists for PID 11092
+2026-03-08 16:19:49,560 [INFO] [MainThread] PID 11092 Exists result: False
+2026-03-08 16:19:49,560 [INFO] [MainThread] Creating WindowControl (loose) for PID 11092
+2026-03-08 16:19:49,560 [INFO] [MainThread] Checking Exists (loose) for PID 11092
+2026-03-08 16:19:49,715 [INFO] [MainThread] PID 11092 Exists (loose) result: False
+2026-03-08 16:19:49,716 [WARNING] [MainThread] 未找到微信主窗口 (scanned PIDs: [13792, 13716, 13804, 11092])
+2026-03-08 16:19:51,712 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-08 16:19:51,714 [INFO] [MainThread] Debug: _find_main_window start (Optimized)
+2026-03-08 16:19:51,715 [WARNING] [MainThread] 检测到名为 '微信' 的窗口，但类名为 'Chrome_WidgetWin_0' (预期: mmui::MainWindow)
+2026-03-08 16:19:51,719 [WARNING] [MainThread] 窗口类名不匹配，忽略并继续搜索: Chrome_WidgetWin_0
+2026-03-08 16:19:51,720 [INFO] [MainThread] Checking Global Window Exists...
+2026-03-08 16:19:52,296 [INFO] [MainThread] Found WeChat PIDs: [13792, 13716, 13804, 11092]
+2026-03-08 16:19:52,296 [INFO] [MainThread] Checking PID: 13792
+2026-03-08 16:19:52,296 [INFO] [MainThread] Creating WindowControl for PID 13792
+2026-03-08 16:19:52,296 [INFO] [MainThread] Checking Exists for PID 13792
+2026-03-08 16:19:52,452 [INFO] [MainThread] PID 13792 Exists result: False
+2026-03-08 16:19:52,452 [INFO] [MainThread] Creating WindowControl (loose) for PID 13792
+2026-03-08 16:19:52,452 [INFO] [MainThread] Checking Exists (loose) for PID 13792
+2026-03-08 16:19:52,614 [INFO] [MainThread] PID 13792 Exists (loose) result: False
+2026-03-08 16:19:52,614 [INFO] [MainThread] Checking PID: 13716
+2026-03-08 16:19:52,614 [INFO] [MainThread] Creating WindowControl for PID 13716
+2026-03-08 16:19:52,614 [INFO] [MainThread] Checking Exists for PID 13716
+2026-03-08 16:19:52,775 [INFO] [MainThread] PID 13716 Exists result: False
+2026-03-08 16:19:52,775 [INFO] [MainThread] Creating WindowControl (loose) for PID 13716
+2026-03-08 16:19:52,775 [INFO] [MainThread] Checking Exists (loose) for PID 13716
+2026-03-08 16:19:52,931 [INFO] [MainThread] PID 13716 Exists (loose) result: False
+2026-03-08 16:19:52,931 [INFO] [MainThread] Checking PID: 13804
+2026-03-08 16:19:52,931 [INFO] [MainThread] Creating WindowControl for PID 13804
+2026-03-08 16:19:52,931 [INFO] [MainThread] Checking Exists for PID 13804
+2026-03-08 16:19:53,084 [INFO] [MainThread] PID 13804 Exists result: False
+2026-03-08 16:19:53,085 [INFO] [MainThread] Creating WindowControl (loose) for PID 13804
+2026-03-08 16:19:53,085 [INFO] [MainThread] Checking Exists (loose) for PID 13804
+2026-03-08 16:19:53,243 [INFO] [MainThread] PID 13804 Exists (loose) result: False
+2026-03-08 16:19:53,243 [INFO] [MainThread] Checking PID: 11092
+2026-03-08 16:19:53,243 [INFO] [MainThread] Creating WindowControl for PID 11092
+2026-03-08 16:19:53,244 [INFO] [MainThread] Checking Exists for PID 11092
+2026-03-08 16:19:53,403 [INFO] [MainThread] PID 11092 Exists result: False
+2026-03-08 16:19:53,403 [INFO] [MainThread] Creating WindowControl (loose) for PID 11092
+2026-03-08 16:19:53,403 [INFO] [MainThread] Checking Exists (loose) for PID 11092
+2026-03-08 16:19:53,558 [INFO] [MainThread] PID 11092 Exists (loose) result: False
+2026-03-08 16:19:53,559 [WARNING] [MainThread] 未找到微信主窗口 (scanned PIDs: [13792, 13716, 13804, 11092])
+2026-03-08 16:19:53,559 [INFO] [MainThread] 未检测到微信窗口，请手动启动并登录微信
+2026-03-08 16:19:55,059 [INFO] [MainThread] Debug: _find_main_window start (Optimized)
+2026-03-08 16:19:55,060 [WARNING] [MainThread] 检测到名为 '微信' 的窗口，但类名为 'Chrome_WidgetWin_0' (预期: mmui::MainWindow)
+2026-03-08 16:19:55,065 [WARNING] [MainThread] 窗口类名不匹配，忽略并继续搜索: Chrome_WidgetWin_0
+2026-03-08 16:19:55,066 [INFO] [MainThread] Checking Global Window Exists...
+2026-03-08 16:19:55,689 [INFO] [MainThread] Found WeChat PIDs: [13792, 13716, 13804, 11092]
+2026-03-08 16:19:55,689 [INFO] [MainThread] Checking PID: 13792
+2026-03-08 16:19:55,690 [INFO] [MainThread] Creating WindowControl for PID 13792
+2026-03-08 16:19:55,690 [INFO] [MainThread] Checking Exists for PID 13792
+2026-03-08 16:19:55,900 [INFO] [MainThread] PID 13792 Exists result: False
+2026-03-08 16:19:55,900 [INFO] [MainThread] Creating WindowControl (loose) for PID 13792
+2026-03-08 16:19:55,900 [INFO] [MainThread] Checking Exists (loose) for PID 13792
+2026-03-08 16:19:56,117 [INFO] [MainThread] PID 13792 Exists (loose) result: False
+2026-03-08 16:19:56,117 [INFO] [MainThread] Checking PID: 13716
+2026-03-08 16:19:56,117 [INFO] [MainThread] Creating WindowControl for PID 13716
+2026-03-08 16:19:56,117 [INFO] [MainThread] Checking Exists for PID 13716
+2026-03-08 16:19:56,312 [INFO] [MainThread] PID 13716 Exists result: False
+2026-03-08 16:19:56,312 [INFO] [MainThread] Creating WindowControl (loose) for PID 13716
+2026-03-08 16:19:56,313 [INFO] [MainThread] Checking Exists (loose) for PID 13716
+2026-03-08 16:19:56,476 [INFO] [MainThread] PID 13716 Exists (loose) result: False
+2026-03-08 16:19:56,476 [INFO] [MainThread] Checking PID: 13804
+2026-03-08 16:19:56,476 [INFO] [MainThread] Creating WindowControl for PID 13804
+2026-03-08 16:19:56,476 [INFO] [MainThread] Checking Exists for PID 13804
+2026-03-08 16:19:56,639 [INFO] [MainThread] PID 13804 Exists result: False
+2026-03-08 16:19:56,639 [INFO] [MainThread] Creating WindowControl (loose) for PID 13804
+2026-03-08 16:19:56,640 [INFO] [MainThread] Checking Exists (loose) for PID 13804
+2026-03-08 16:19:56,810 [INFO] [MainThread] PID 13804 Exists (loose) result: False
+2026-03-08 16:19:56,810 [INFO] [MainThread] Checking PID: 11092
+2026-03-08 16:19:56,810 [INFO] [MainThread] Creating WindowControl for PID 11092
+2026-03-08 16:19:56,810 [INFO] [MainThread] Checking Exists for PID 11092
+2026-03-08 16:19:56,968 [INFO] [MainThread] PID 11092 Exists result: False
+2026-03-08 16:19:56,968 [INFO] [MainThread] Creating WindowControl (loose) for PID 11092
+2026-03-08 16:19:56,968 [INFO] [MainThread] Checking Exists (loose) for PID 11092
+2026-03-09 15:57:45,627 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-09 15:57:45,730 [INFO] [MainThread] 检查微信环境状态...
+2026-03-09 15:57:45,731 [INFO] [MainThread] Debug: _find_main_window start (Optimized)
+2026-03-09 15:57:45,731 [WARNING] [MainThread] 检测到名为 '微信' 的窗口，但类名为 'Qt51514QWindowIcon' (预期: mmui::MainWindow)
+2026-03-09 15:57:45,734 [INFO] [MainThread] Main window found, calling _log_window_tree
+2026-03-09 15:57:45,735 [INFO] [MainThread] Preparing to log tree for handle: 394984
+2026-03-09 15:57:45,755 [INFO] [MainThread] Window has 2 children
+2026-03-09 15:57:45,756 [INFO] [MainThread] WindowChild L1: PaneControl | MMUIRenderSubWindowHW
+2026-03-09 15:57:45,759 [INFO] [MainThread] WindowChild L1: GroupControl | 
+2026-03-09 15:57:45,763 [INFO] [MainThread] WindowChild L2: CustomControl | 
+2026-03-09 15:57:45,763 [INFO] [MainThread] WindowChild L2: ToolBarControl | 
+2026-03-09 15:57:45,764 [INFO] [MainThread] 检测到正常的微信窗口 (ClassName=mmui::MainWindow)
+2026-03-09 15:57:51,244 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-09 15:57:51,257 [INFO] [MainThread] 微信主窗口已就绪: ClassName=mmui::MainWindow
+2026-03-09 15:57:51,259 [INFO] [MainThread] 主窗口就绪快照: Name=微信 Class=mmui::MainWindow PID=2832 Handle=394984 Rect=(587,339,1508,1065)[921x726]
+2026-03-09 15:57:51,270 [INFO] [MainThread] 主窗口前6个子控件: ['PaneControl|MMUIRenderSubWindowHW', 'GroupControl|']
+2026-03-09 15:57:51,724 [INFO] [MainThread] 未找到会话列表控件
+2026-03-09 15:57:51,846 [INFO] [MainThread] 消息列表控件: Class=mmui::RecyclerListView Name=消息 Rect=(859,409,1506,860)[647x451] Children=6
+2026-03-09 15:57:51,854 [INFO] [CommandServer] 指令服务已启动: http://127.0.0.1:51234
+2026-03-09 15:57:51,854 [INFO] [MainThread] wechat_bridge 已启动 (监听模式)
+2026-03-09 15:57:52,369 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 今天心情不好
+2026-03-09 15:57:52,369 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 哎，谁还没个蔫了吧唧的时候。别
+2026-03-09 15:57:52,369 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 投抖音还是视频号？
+2026-03-09 15:57:56,336 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:57:56,734 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:57:56,734 [INFO] [MainThread] 下一次扫描安排在 2.14 秒后
+2026-03-09 15:58:01,246 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 死磕抖音，别分心。视频号现在就
+2026-03-09 15:58:01,246 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:58:01,652 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:58:01,653 [INFO] [MainThread] 下一次扫描安排在 1.93 秒后
+2026-03-09 15:58:03,581 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:58:03,860 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:58:03,860 [INFO] [MainThread] 下一次扫描安排在 3.32 秒后
+2026-03-09 15:58:07,893 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:58:08,267 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:58:08,267 [INFO] [MainThread] 下一次扫描安排在 2.12 秒后
+2026-03-09 15:58:10,564 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:58:10,956 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:58:10,956 [INFO] [MainThread] 下一次扫描安排在 1.55 秒后
+2026-03-09 15:58:12,796 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:58:13,093 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:58:13,093 [INFO] [MainThread] 下一次扫描安排在 1.73 秒后
+2026-03-09 15:58:14,931 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:58:15,295 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:58:15,295 [INFO] [MainThread] 下一次扫描安排在 2.57 秒后
+2026-03-09 15:58:19,155 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:58:19,465 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:58:19,466 [INFO] [MainThread] 下一次扫描安排在 3.51 秒后
+2026-03-09 15:58:23,784 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:58:24,221 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:58:24,221 [INFO] [MainThread] 下一次扫描安排在 1.67 秒后
+2026-03-09 15:58:26,069 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:58:26,433 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:58:26,434 [INFO] [MainThread] 下一次扫描安排在 3.45 秒后
+2026-03-09 15:58:30,718 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:58:31,032 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:58:31,032 [INFO] [MainThread] 下一次扫描安排在 1.99 秒后
+2026-03-09 15:58:33,125 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:58:33,512 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:58:33,513 [INFO] [MainThread] 下一次扫描安排在 3.14 秒后
+2026-03-09 15:58:37,885 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:58:38,288 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:58:38,288 [INFO] [MainThread] 下一次扫描安排在 2.35 秒后
+2026-03-09 15:58:40,364 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:58:40,781 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:58:40,781 [INFO] [MainThread] 下一次扫描安排在 3.34 秒后
+2026-03-09 15:58:44,592 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:58:44,938 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:58:44,938 [INFO] [MainThread] 下一次扫描安排在 2.13 秒后
+2026-03-09 15:58:47,184 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:58:47,568 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:58:47,568 [INFO] [MainThread] 下一次扫描安排在 2.36 秒后
+2026-03-09 15:58:49,506 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:58:49,799 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:58:49,799 [INFO] [MainThread] 下一次扫描安排在 3.22 秒后
+2026-03-09 15:58:53,695 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:58:54,009 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:58:54,009 [INFO] [MainThread] 下一次扫描安排在 2.08 秒后
+2026-03-09 15:58:56,434 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:58:56,846 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:58:56,846 [INFO] [MainThread] 下一次扫描安排在 3.76 秒后
+2026-03-09 15:59:00,907 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:59:01,386 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:59:01,387 [INFO] [MainThread] 下一次扫描安排在 1.63 秒后
+2026-03-09 15:59:03,287 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:59:03,660 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:59:03,660 [INFO] [MainThread] 下一次扫描安排在 2.93 秒后
+2026-03-09 15:59:07,660 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:59:08,107 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:59:08,107 [INFO] [MainThread] 下一次扫描安排在 1.53 秒后
+2026-03-09 15:59:10,169 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:59:10,452 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:59:10,452 [INFO] [MainThread] 下一次扫描安排在 3.85 秒后
+2026-03-09 15:59:14,638 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:59:15,027 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:59:15,027 [INFO] [MainThread] 下一次扫描安排在 2.11 秒后
+2026-03-09 15:59:17,200 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:59:17,603 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:59:17,603 [INFO] [MainThread] 下一次扫描安排在 2.52 秒后
+2026-03-09 15:59:21,837 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 投单个视频还是多个？
+2026-03-09 15:59:21,838 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:59:22,111 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:59:22,111 [INFO] [MainThread] 下一次扫描安排在 2.64 秒后
+2026-03-09 15:59:26,602 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:59:31,165 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:59:31,165 [INFO] [MainThread] 下一次扫描安排在 3.34 秒后
+2026-03-09 15:59:33,114 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 就盯死那一个已经跑出来的视频，
+2026-03-09 15:59:33,114 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:59:33,488 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:59:33,489 [INFO] [MainThread] 下一次扫描安排在 2.09 秒后
+2026-03-09 15:59:35,533 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:59:35,915 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:59:35,915 [INFO] [MainThread] 下一次扫描安排在 2.44 秒后
+2026-03-09 15:59:40,367 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 15:59:40,796 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 15:59:40,796 [INFO] [MainThread] 下一次扫描安排在 3.12 秒后
+2026-03-09 17:53:13,419 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-09 17:53:13,495 [INFO] [MainThread] 检查微信环境状态...
+2026-03-09 17:53:13,496 [INFO] [MainThread] Debug: _find_main_window start (Optimized)
+2026-03-09 17:53:13,496 [WARNING] [MainThread] 检测到名为 '微信' 的窗口，但类名为 'Qt51514QWindowIcon' (预期: mmui::MainWindow)
+2026-03-09 17:53:13,499 [INFO] [MainThread] Main window found, calling _log_window_tree
+2026-03-09 17:53:13,500 [INFO] [MainThread] Preparing to log tree for handle: 394984
+2026-03-09 17:53:13,515 [INFO] [MainThread] Window has 2 children
+2026-03-09 17:53:13,516 [INFO] [MainThread] WindowChild L1: PaneControl | MMUIRenderSubWindowHW
+2026-03-09 17:53:13,519 [INFO] [MainThread] WindowChild L1: GroupControl | 
+2026-03-09 17:53:13,521 [INFO] [MainThread] WindowChild L2: CustomControl | 
+2026-03-09 17:53:13,522 [INFO] [MainThread] WindowChild L2: ToolBarControl | 
+2026-03-09 17:53:13,524 [INFO] [MainThread] 检测到正常的微信窗口 (ClassName=mmui::MainWindow)
+2026-03-09 17:53:30,689 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-09 17:53:30,704 [INFO] [MainThread] 微信主窗口已就绪: ClassName=mmui::MainWindow
+2026-03-09 17:53:30,705 [INFO] [MainThread] 主窗口就绪快照: Name=微信 Class=mmui::MainWindow PID=2832 Handle=394984 Rect=(212,321,1133,1047)[921x726]
+2026-03-09 17:53:30,719 [INFO] [MainThread] 主窗口前6个子控件: ['PaneControl|MMUIRenderSubWindowHW', 'GroupControl|']
+2026-03-09 17:53:31,117 [INFO] [MainThread] 会话列表控件: Class=mmui::XTableView Name=会话 Rect=(273,390,483,1047)[210x657] Children=4
+2026-03-09 17:53:31,227 [INFO] [MainThread] 消息列表控件: Class=mmui::RecyclerListView Name=消息 Rect=(484,391,1131,842)[647x451] Children=6
+2026-03-09 17:53:31,235 [INFO] [CommandServer] 指令服务已启动: http://127.0.0.1:51234
+2026-03-09 17:53:31,235 [INFO] [MainThread] wechat_bridge 已启动 (监听模式)
+2026-03-09 17:53:31,687 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 投单个视频还是多个？
+2026-03-09 17:53:31,687 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 就盯死那一个已经跑出来的视频，
+2026-03-09 17:53:31,688 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 什么是矩阵号联动？
+2026-03-09 17:53:37,292 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 17:53:37,714 [INFO] [MainThread] DEBUG: Item Name hit unread pattern [x条]: 夏天 [1条]  什么是矩阵号联动？ 17:58 
+2026-03-09 17:53:37,716 [INFO] [MainThread] DEBUG: Item Name hit unread pattern [x条]: 腾讯新闻 [3条]  总书记心里有两位高德荣 16:01 
+2026-03-09 17:53:37,718 [INFO] [MainThread] 发现 2 个未读会话
+2026-03-09 17:53:37,718 [INFO] [MainThread] 本轮处理第一个未读会话 (共 2 个)
+2026-03-09 17:53:41,737 [INFO] [MainThread] 下一次扫描安排在 2.55 秒后
+2026-03-09 17:53:43,848 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 17:53:44,178 [INFO] [MainThread] DEBUG: Item Name hit unread pattern [x条]: 腾讯新闻 [3条]  总书记心里有两位高德荣 16:01 
+2026-03-09 17:53:44,179 [INFO] [MainThread] 发现 1 个未读会话
+2026-03-09 17:53:44,179 [INFO] [MainThread] 本轮处理第一个未读会话 (共 1 个)
+2026-03-09 17:53:47,492 [INFO] [MainThread] 下一次扫描安排在 2.69 秒后
+2026-03-09 17:53:49,416 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 17:53:49,827 [INFO] [MainThread] 未读为空: 会话列表子项数量=4
+2026-03-09 17:53:49,831 [INFO] [MainThread] 会话列表前6项: ['ListItemControl|mmui::ChatSessionCell|夏天\n什么是矩阵号联动？\n17:58\n|(273,390,483,458)[210x68]', 'ListItemControl|mmui::ChatSessionCell|文件传输助手\n测试消息：Hello World! 中文测试 😊\n02/10\n|(273,458,483,526)[210x68]', 'ListItemControl|mmui::ChatSessionCell|腾讯新闻\n总书记心里有两位高德荣\n16:01\n|(273,526,483,594)[210x68]', 'ListItemControl|mmui::ChatSessionCell|严明～明亚深圳\nAll in 抖音！别犹豫，别分心。视频号现在水太浅，流量机制也不稳，你那点预算撒进去连个响儿都听不见。抖音虽…\n02/22\n|(273,594,483,662)[210x68]']
+2026-03-09 17:53:49,833 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 17:53:49,833 [INFO] [MainThread] 下一次扫描安排在 3.49 秒后
+2026-03-09 17:53:54,298 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 17:53:54,761 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 17:53:54,761 [INFO] [MainThread] 下一次扫描安排在 1.90 秒后
+2026-03-09 17:53:56,641 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 17:53:56,938 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 17:53:56,938 [INFO] [MainThread] 下一次扫描安排在 3.36 秒后
+2026-03-09 17:54:00,761 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 17:54:01,091 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 17:54:01,092 [INFO] [MainThread] 下一次扫描安排在 1.62 秒后
+2026-03-09 17:54:03,379 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 17:54:03,772 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 17:54:03,773 [INFO] [MainThread] 下一次扫描安排在 2.30 秒后
+2026-03-09 17:54:05,952 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 17:54:06,264 [INFO] [MainThread] 未读为空: 会话列表子项数量=4
+2026-03-09 17:54:06,266 [INFO] [MainThread] 会话列表前6项: ['ListItemControl|mmui::ChatSessionCell|夏天\n什么是矩阵号联动？\n17:58\n|(273,390,483,458)[210x68]', 'ListItemControl|mmui::ChatSessionCell|文件传输助手\n测试消息：Hello World! 中文测试 😊\n02/10\n|(273,458,483,526)[210x68]', 'ListItemControl|mmui::ChatSessionCell|腾讯新闻\n总书记心里有两位高德荣\n16:01\n|(273,526,483,594)[210x68]', 'ListItemControl|mmui::ChatSessionCell|严明～明亚深圳\nAll in 抖音！别犹豫，别分心。视频号现在水太浅，流量机制也不稳，你那点预算撒进去连个响儿都听不见。抖音虽…\n02/22\n|(273,594,483,662)[210x68]']
+2026-03-09 17:54:06,267 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 17:54:06,267 [INFO] [MainThread] 下一次扫描安排在 3.03 秒后
+2026-03-09 17:58:36,867 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-09 17:58:36,940 [INFO] [MainThread] 检查微信环境状态...
+2026-03-09 17:58:36,940 [INFO] [MainThread] Debug: _find_main_window start (Optimized)
+2026-03-09 17:58:36,940 [WARNING] [MainThread] 检测到名为 '微信' 的窗口，但类名为 'Qt51514QWindowIcon' (预期: mmui::MainWindow)
+2026-03-09 17:58:36,944 [INFO] [MainThread] Main window found, calling _log_window_tree
+2026-03-09 17:58:36,944 [INFO] [MainThread] Preparing to log tree for handle: 394984
+2026-03-09 17:58:36,955 [INFO] [MainThread] Window has 2 children
+2026-03-09 17:58:36,956 [INFO] [MainThread] WindowChild L1: PaneControl | MMUIRenderSubWindowHW
+2026-03-09 17:58:36,959 [INFO] [MainThread] WindowChild L1: GroupControl | 
+2026-03-09 17:58:36,962 [INFO] [MainThread] WindowChild L2: CustomControl | 
+2026-03-09 17:58:36,962 [INFO] [MainThread] WindowChild L2: ToolBarControl | 
+2026-03-09 17:58:36,963 [INFO] [MainThread] 检测到正常的微信窗口 (ClassName=mmui::MainWindow)
+2026-03-09 17:58:53,417 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-09 17:58:53,438 [INFO] [MainThread] 微信主窗口已就绪: ClassName=mmui::MainWindow
+2026-03-09 17:58:53,440 [INFO] [MainThread] 主窗口就绪快照: Name=微信 Class=mmui::MainWindow PID=2832 Handle=394984 Rect=(232,327,1153,1053)[921x726]
+2026-03-09 17:58:53,456 [INFO] [MainThread] 主窗口前6个子控件: ['PaneControl|MMUIRenderSubWindowHW', 'GroupControl|']
+2026-03-09 17:58:53,921 [INFO] [MainThread] 未找到会话列表控件
+2026-03-09 17:58:54,019 [INFO] [MainThread] 消息列表控件: Class=mmui::RecyclerListView Name=消息 Rect=(504,397,1151,848)[647x451] Children=6
+2026-03-09 17:58:54,026 [INFO] [CommandServer] 指令服务已启动: http://127.0.0.1:51234
+2026-03-09 17:58:54,026 [INFO] [MainThread] wechat_bridge 已启动 (监听模式)
+2026-03-09 17:58:54,586 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 投单个视频还是多个？
+2026-03-09 17:58:54,586 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 就盯死那一个已经跑出来的视频，
+2026-03-09 17:58:54,586 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 什么是矩阵号联动？
+2026-03-09 17:58:58,995 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 17:58:59,383 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 17:58:59,383 [INFO] [MainThread] 下一次扫描安排在 3.13 秒后
+2026-03-09 17:59:03,606 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 17:59:04,017 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 17:59:04,017 [INFO] [MainThread] 下一次扫描安排在 2.23 秒后
+2026-03-09 17:59:06,018 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 17:59:06,429 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 17:59:06,430 [INFO] [MainThread] 下一次扫描安排在 3.49 秒后
+2026-03-09 17:59:10,603 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 17:59:11,029 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 17:59:11,029 [INFO] [MainThread] 下一次扫描安排在 3.72 秒后
+2026-03-09 17:59:15,722 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 17:59:16,151 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 17:59:16,151 [INFO] [MainThread] 下一次扫描安排在 2.26 秒后
+2026-03-09 17:59:18,346 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 17:59:18,781 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 17:59:18,782 [INFO] [MainThread] 下一次扫描安排在 1.82 秒后
+2026-03-09 17:59:21,447 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 17:59:21,882 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 17:59:21,883 [INFO] [MainThread] 下一次扫描安排在 1.58 秒后
+2026-03-09 17:59:23,973 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 17:59:24,378 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 17:59:24,379 [INFO] [MainThread] 下一次扫描安排在 3.75 秒后
+2026-03-09 17:59:28,216 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 17:59:28,635 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 17:59:28,635 [INFO] [MainThread] 下一次扫描安排在 2.39 秒后
+2026-03-09 17:59:30,681 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 17:59:31,117 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 17:59:31,117 [INFO] [MainThread] 下一次扫描安排在 1.56 秒后
+2026-03-09 17:59:33,374 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 17:59:33,793 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 17:59:33,793 [INFO] [MainThread] 下一次扫描安排在 3.11 秒后
+2026-03-09 17:59:37,937 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 17:59:38,378 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 17:59:38,379 [INFO] [MainThread] 下一次扫描安排在 2.50 秒后
+2026-03-09 17:59:42,184 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 17:59:42,574 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 17:59:42,575 [INFO] [MainThread] 下一次扫描安排在 3.36 秒后
+2026-03-09 17:59:46,763 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 17:59:47,200 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 17:59:47,200 [INFO] [MainThread] 下一次扫描安排在 3.70 秒后
+2026-03-09 17:59:51,529 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 17:59:51,860 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 17:59:51,860 [INFO] [MainThread] 下一次扫描安排在 1.95 秒后
+2026-03-09 17:59:53,892 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 17:59:54,344 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 17:59:54,344 [INFO] [MainThread] 下一次扫描安排在 3.96 秒后
+2026-03-09 17:59:58,981 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 17:59:59,323 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 17:59:59,323 [INFO] [MainThread] 下一次扫描安排在 2.85 秒后
+2026-03-09 18:00:03,028 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:00:03,371 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:00:03,371 [INFO] [MainThread] 下一次扫描安排在 3.11 秒后
+2026-03-09 18:00:07,438 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:00:07,763 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:00:07,763 [INFO] [MainThread] 下一次扫描安排在 2.99 秒后
+2026-03-09 18:00:11,840 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:00:12,220 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:00:12,220 [INFO] [MainThread] 下一次扫描安排在 3.12 秒后
+2026-03-09 18:00:16,492 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:00:16,811 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:00:16,811 [INFO] [MainThread] 下一次扫描安排在 2.52 秒后
+2026-03-09 18:00:20,840 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:00:21,153 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:00:21,153 [INFO] [MainThread] 下一次扫描安排在 3.41 秒后
+2026-03-09 18:00:25,606 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:00:26,068 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:00:26,068 [INFO] [MainThread] 下一次扫描安排在 2.34 秒后
+2026-03-09 18:02:37,830 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-09 18:02:37,905 [INFO] [MainThread] 检查微信环境状态...
+2026-03-09 18:02:37,905 [INFO] [MainThread] Debug: _find_main_window start (Optimized)
+2026-03-09 18:02:37,905 [WARNING] [MainThread] 检测到名为 '微信' 的窗口，但类名为 'Qt51514QWindowIcon' (预期: mmui::MainWindow)
+2026-03-09 18:02:37,908 [INFO] [MainThread] Main window found, calling _log_window_tree
+2026-03-09 18:02:37,908 [INFO] [MainThread] Preparing to log tree for handle: 394984
+2026-03-09 18:02:37,920 [INFO] [MainThread] Window has 2 children
+2026-03-09 18:02:37,921 [INFO] [MainThread] WindowChild L1: PaneControl | MMUIRenderSubWindowHW
+2026-03-09 18:02:37,924 [INFO] [MainThread] WindowChild L1: GroupControl | 
+2026-03-09 18:02:37,926 [INFO] [MainThread] WindowChild L2: CustomControl | 
+2026-03-09 18:02:37,927 [INFO] [MainThread] WindowChild L2: ToolBarControl | 
+2026-03-09 18:02:37,928 [INFO] [MainThread] 检测到正常的微信窗口 (ClassName=mmui::MainWindow)
+2026-03-09 18:02:53,596 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-09 18:02:53,611 [INFO] [MainThread] 微信主窗口已就绪: ClassName=mmui::MainWindow
+2026-03-09 18:02:53,613 [INFO] [MainThread] 主窗口就绪快照: Name=微信 Class=mmui::MainWindow PID=2832 Handle=394984 Rect=(232,327,1153,1053)[921x726]
+2026-03-09 18:02:53,626 [INFO] [MainThread] 主窗口前6个子控件: ['PaneControl|MMUIRenderSubWindowHW', 'GroupControl|']
+2026-03-09 18:02:54,101 [INFO] [MainThread] 未找到会话列表控件
+2026-03-09 18:02:54,199 [INFO] [MainThread] 消息列表控件: Class=mmui::RecyclerListView Name=消息 Rect=(504,397,1151,848)[647x451] Children=6
+2026-03-09 18:02:54,206 [INFO] [CommandServer] 指令服务已启动: http://127.0.0.1:51234
+2026-03-09 18:02:54,206 [INFO] [MainThread] wechat_bridge 已启动 (监听模式)
+2026-03-09 18:02:54,728 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 投单个视频还是多个？
+2026-03-09 18:02:54,728 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 就盯死那一个已经跑出来的视频，
+2026-03-09 18:02:54,729 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 什么是矩阵号联动？
+2026-03-09 18:03:04,637 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 就是你手底下一堆号，别单打独斗
+2026-03-09 18:03:04,637 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:03:05,030 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:03:05,030 [INFO] [MainThread] 下一次扫描安排在 3.66 秒后
+2026-03-09 18:03:06,907 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:03:07,290 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:03:07,290 [INFO] [MainThread] 下一次扫描安排在 2.28 秒后
+2026-03-09 18:03:11,299 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:03:11,581 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:03:11,581 [INFO] [MainThread] 下一次扫描安排在 2.77 秒后
+2026-03-09 18:03:15,529 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:03:15,871 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:03:15,871 [INFO] [MainThread] 下一次扫描安排在 2.43 秒后
+2026-03-09 18:03:19,718 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:03:19,988 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:03:19,988 [INFO] [MainThread] 下一次扫描安排在 2.57 秒后
+2026-03-09 18:03:23,516 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:03:23,793 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:03:23,793 [INFO] [MainThread] 下一次扫描安排在 3.28 秒后
+2026-03-09 18:03:27,847 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:03:28,268 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:03:28,268 [INFO] [MainThread] 下一次扫描安排在 2.25 秒后
+2026-03-09 18:03:32,036 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:03:32,674 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:03:32,674 [INFO] [MainThread] 下一次扫描安排在 3.54 秒后
+2026-03-09 18:03:36,824 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:03:37,155 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:03:37,155 [INFO] [MainThread] 下一次扫描安排在 3.15 秒后
+2026-03-09 18:03:41,209 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:03:41,636 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:03:41,636 [INFO] [MainThread] 下一次扫描安排在 1.99 秒后
+2026-03-09 18:03:43,481 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:03:43,964 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:03:43,965 [INFO] [MainThread] 下一次扫描安排在 1.51 秒后
+2026-03-09 18:03:46,105 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:03:46,380 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:03:46,380 [INFO] [MainThread] 下一次扫描安排在 2.42 秒后
+2026-03-09 18:03:49,957 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:03:50,393 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:03:50,393 [INFO] [MainThread] 下一次扫描安排在 3.11 秒后
+2026-03-09 18:03:54,178 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:03:54,584 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:03:54,585 [INFO] [MainThread] 下一次扫描安排在 3.76 秒后
+2026-03-09 18:03:58,724 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:03:59,148 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:03:59,148 [INFO] [MainThread] 下一次扫描安排在 3.73 秒后
+2026-03-09 18:04:03,223 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:04:03,611 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:04:03,611 [INFO] [MainThread] 下一次扫描安排在 3.67 秒后
+2026-03-09 18:04:07,533 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:04:07,938 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:04:07,938 [INFO] [MainThread] 下一次扫描安排在 1.75 秒后
+2026-03-09 18:04:09,912 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:04:10,369 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:04:10,370 [INFO] [MainThread] 下一次扫描安排在 3.69 秒后
+2026-03-09 18:04:13,946 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:04:14,395 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:04:14,396 [INFO] [MainThread] 下一次扫描安排在 3.99 秒后
+2026-03-09 18:19:06,202 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-09 18:19:06,283 [INFO] [MainThread] 检查微信环境状态...
+2026-03-09 18:19:06,283 [INFO] [MainThread] Debug: _find_main_window start (Optimized)
+2026-03-09 18:19:06,284 [WARNING] [MainThread] 检测到名为 '微信' 的窗口，但类名为 'Qt51514QWindowIcon' (预期: mmui::MainWindow)
+2026-03-09 18:19:06,286 [INFO] [MainThread] Main window found, calling _log_window_tree
+2026-03-09 18:19:06,287 [INFO] [MainThread] Preparing to log tree for handle: 394984
+2026-03-09 18:19:06,302 [INFO] [MainThread] Window has 2 children
+2026-03-09 18:19:06,303 [INFO] [MainThread] WindowChild L1: PaneControl | MMUIRenderSubWindowHW
+2026-03-09 18:19:06,308 [INFO] [MainThread] WindowChild L1: GroupControl | 
+2026-03-09 18:19:06,312 [INFO] [MainThread] WindowChild L2: CustomControl | 
+2026-03-09 18:19:06,314 [INFO] [MainThread] WindowChild L2: ToolBarControl | 
+2026-03-09 18:19:06,316 [INFO] [MainThread] 检测到正常的微信窗口 (ClassName=mmui::MainWindow)
+2026-03-09 18:19:23,873 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-09 18:19:23,887 [INFO] [MainThread] 微信主窗口已就绪: ClassName=mmui::MainWindow
+2026-03-09 18:19:23,890 [INFO] [MainThread] 主窗口就绪快照: Name=微信 Class=mmui::MainWindow PID=2832 Handle=394984 Rect=(232,327,1153,1053)[921x726]
+2026-03-09 18:19:23,901 [INFO] [MainThread] 主窗口前6个子控件: ['PaneControl|MMUIRenderSubWindowHW', 'GroupControl|']
+2026-03-09 18:19:24,387 [INFO] [MainThread] 未找到会话列表控件
+2026-03-09 18:19:24,476 [INFO] [MainThread] 消息列表控件: Class=mmui::RecyclerListView Name=消息 Rect=(504,397,1151,848)[647x451] Children=5
+2026-03-09 18:19:24,484 [INFO] [CommandServer] 指令服务已启动: http://127.0.0.1:51234
+2026-03-09 18:19:24,484 [INFO] [MainThread] wechat_bridge 已启动 (监听模式)
+2026-03-09 18:19:24,884 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 什么是秒回前排评论？
+2026-03-09 18:19:28,546 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:19:28,996 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:19:28,997 [INFO] [MainThread] 下一次扫描安排在 2.27 秒后
+2026-03-09 18:19:35,148 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 就是你视频一发，马上用小号或者
+2026-03-09 18:19:35,149 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:19:35,440 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:19:35,440 [INFO] [MainThread] 下一次扫描安排在 2.07 秒后
+2026-03-09 18:19:37,554 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:19:37,855 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:19:37,855 [INFO] [MainThread] 下一次扫描安排在 3.26 秒后
+2026-03-09 18:19:41,790 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:19:42,171 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:19:42,171 [INFO] [MainThread] 下一次扫描安排在 3.19 秒后
+2026-03-09 18:19:46,058 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:19:46,385 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:19:46,385 [INFO] [MainThread] 下一次扫描安排在 2.04 秒后
+2026-03-09 18:26:39,316 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-09 18:26:39,388 [INFO] [MainThread] 检查微信环境状态...
+2026-03-09 18:26:39,389 [INFO] [MainThread] Debug: _find_main_window start (Optimized)
+2026-03-09 18:26:39,390 [WARNING] [MainThread] 检测到名为 '微信' 的窗口，但类名为 'Qt51514QWindowIcon' (预期: mmui::MainWindow)
+2026-03-09 18:26:39,394 [INFO] [MainThread] Main window found, calling _log_window_tree
+2026-03-09 18:26:39,394 [INFO] [MainThread] Preparing to log tree for handle: 394984
+2026-03-09 18:26:39,413 [INFO] [MainThread] Window has 2 children
+2026-03-09 18:26:39,414 [INFO] [MainThread] WindowChild L1: PaneControl | MMUIRenderSubWindowHW
+2026-03-09 18:26:39,417 [INFO] [MainThread] WindowChild L1: GroupControl | 
+2026-03-09 18:26:39,419 [INFO] [MainThread] WindowChild L2: CustomControl | 
+2026-03-09 18:26:39,420 [INFO] [MainThread] WindowChild L2: ToolBarControl | 
+2026-03-09 18:26:39,423 [INFO] [MainThread] 检测到正常的微信窗口 (ClassName=mmui::MainWindow)
+2026-03-09 18:26:56,740 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-09 18:26:56,754 [INFO] [MainThread] 微信主窗口已就绪: ClassName=mmui::MainWindow
+2026-03-09 18:26:56,756 [INFO] [MainThread] 主窗口就绪快照: Name=微信 Class=mmui::MainWindow PID=2832 Handle=394984 Rect=(232,327,1153,1053)[921x726]
+2026-03-09 18:26:56,770 [INFO] [MainThread] 主窗口前6个子控件: ['PaneControl|MMUIRenderSubWindowHW', 'GroupControl|']
+2026-03-09 18:26:57,164 [INFO] [MainThread] 未找到会话列表控件
+2026-03-09 18:26:57,252 [INFO] [MainThread] 消息列表控件: Class=mmui::RecyclerListView Name=消息 Rect=(504,397,1151,848)[647x451] Children=6
+2026-03-09 18:26:57,260 [INFO] [CommandServer] 指令服务已启动: http://127.0.0.1:51234
+2026-03-09 18:26:57,260 [INFO] [MainThread] wechat_bridge 已启动 (监听模式)
+2026-03-09 18:26:57,681 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 什么是秒回前排评论？
+2026-03-09 18:26:57,681 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 就是你视频一发，马上用小号或者
+2026-03-09 18:26:57,681 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 什么是私域联动？
+2026-03-09 18:27:08,375 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 私域联动就是把你抖音上搞来的粉
+2026-03-09 18:27:08,375 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:27:08,772 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:27:08,772 [INFO] [MainThread] 下一次扫描安排在 2.19 秒后
+2026-03-09 18:27:10,713 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:27:11,099 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:27:11,099 [INFO] [MainThread] 下一次扫描安排在 2.44 秒后
+2026-03-09 18:27:13,245 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:27:13,561 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:27:13,561 [INFO] [MainThread] 下一次扫描安排在 2.67 秒后
+2026-03-09 18:35:02,539 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-09 18:35:02,606 [INFO] [MainThread] 检查微信环境状态...
+2026-03-09 18:35:02,606 [INFO] [MainThread] Debug: _find_main_window start (Optimized)
+2026-03-09 18:35:02,607 [WARNING] [MainThread] 检测到名为 '微信' 的窗口，但类名为 'Qt51514QWindowIcon' (预期: mmui::MainWindow)
+2026-03-09 18:35:02,611 [INFO] [MainThread] Main window found, calling _log_window_tree
+2026-03-09 18:35:02,611 [INFO] [MainThread] Preparing to log tree for handle: 394984
+2026-03-09 18:35:02,622 [INFO] [MainThread] Window has 2 children
+2026-03-09 18:35:02,623 [INFO] [MainThread] WindowChild L1: PaneControl | MMUIRenderSubWindowHW
+2026-03-09 18:35:02,626 [INFO] [MainThread] WindowChild L1: GroupControl | 
+2026-03-09 18:35:02,629 [INFO] [MainThread] WindowChild L2: CustomControl | 
+2026-03-09 18:35:02,630 [INFO] [MainThread] WindowChild L2: ToolBarControl | 
+2026-03-09 18:35:02,630 [INFO] [MainThread] 检测到正常的微信窗口 (ClassName=mmui::MainWindow)
+2026-03-09 18:35:20,405 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-09 18:35:20,419 [INFO] [MainThread] 微信主窗口已就绪: ClassName=mmui::MainWindow
+2026-03-09 18:35:20,420 [INFO] [MainThread] 主窗口就绪快照: Name=微信 Class=mmui::MainWindow PID=2832 Handle=394984 Rect=(232,327,1153,1053)[921x726]
+2026-03-09 18:35:20,431 [INFO] [MainThread] 主窗口前6个子控件: ['PaneControl|MMUIRenderSubWindowHW', 'GroupControl|']
+2026-03-09 18:35:20,873 [INFO] [MainThread] 未找到会话列表控件
+2026-03-09 18:35:20,984 [INFO] [MainThread] 消息列表控件: Class=mmui::RecyclerListView Name=消息 Rect=(504,397,1151,848)[647x451] Children=6
+2026-03-09 18:35:20,993 [INFO] [CommandServer] 指令服务已启动: http://127.0.0.1:51234
+2026-03-09 18:35:20,993 [INFO] [MainThread] wechat_bridge 已启动 (监听模式)
+2026-03-09 18:35:21,582 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 就是你视频一发，马上用小号或者
+2026-03-09 18:35:21,582 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 什么是私域联动？
+2026-03-09 18:35:21,582 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 私域联动就是把你抖音上搞来的粉
+2026-03-09 18:35:21,583 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 什么是互动既生命？
+2026-03-09 18:35:25,978 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:35:26,423 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:35:26,424 [INFO] [MainThread] 下一次扫描安排在 3.42 秒后
+2026-03-09 18:35:34,416 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 在抖音这地界，没人互动的视频就
+2026-03-09 18:35:34,416 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:35:34,816 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:35:34,816 [INFO] [MainThread] 下一次扫描安排在 3.87 秒后
+2026-03-09 18:35:37,115 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:35:37,531 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:35:37,531 [INFO] [MainThread] 下一次扫描安排在 3.35 秒后
+2026-03-09 18:35:42,151 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:35:42,568 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:35:42,568 [INFO] [MainThread] 下一次扫描安排在 1.98 秒后
+2026-03-09 18:35:44,849 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:35:45,183 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:35:45,183 [INFO] [MainThread] 下一次扫描安排在 2.50 秒后
+2026-03-09 18:35:47,486 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:35:47,821 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:35:47,821 [INFO] [MainThread] 下一次扫描安排在 3.28 秒后
+2026-03-09 18:42:43,092 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-09 18:42:43,169 [INFO] [MainThread] 检查微信环境状态...
+2026-03-09 18:42:43,169 [INFO] [MainThread] Debug: _find_main_window start (Optimized)
+2026-03-09 18:42:43,170 [WARNING] [MainThread] 检测到名为 '微信' 的窗口，但类名为 'Qt51514QWindowIcon' (预期: mmui::MainWindow)
+2026-03-09 18:42:43,175 [INFO] [MainThread] Main window found, calling _log_window_tree
+2026-03-09 18:42:43,175 [INFO] [MainThread] Preparing to log tree for handle: 394984
+2026-03-09 18:42:43,192 [INFO] [MainThread] Window has 2 children
+2026-03-09 18:42:43,193 [INFO] [MainThread] WindowChild L1: PaneControl | MMUIRenderSubWindowHW
+2026-03-09 18:42:43,196 [INFO] [MainThread] WindowChild L1: GroupControl | 
+2026-03-09 18:42:43,198 [INFO] [MainThread] WindowChild L2: CustomControl | 
+2026-03-09 18:42:43,199 [INFO] [MainThread] WindowChild L2: ToolBarControl | 
+2026-03-09 18:42:43,200 [INFO] [MainThread] 检测到正常的微信窗口 (ClassName=mmui::MainWindow)
+2026-03-09 18:43:01,066 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-09 18:43:01,085 [INFO] [MainThread] 微信主窗口已就绪: ClassName=mmui::MainWindow
+2026-03-09 18:43:01,087 [INFO] [MainThread] 主窗口就绪快照: Name=微信 Class=mmui::MainWindow PID=2832 Handle=394984 Rect=(232,327,1153,1053)[921x726]
+2026-03-09 18:43:01,102 [INFO] [MainThread] 主窗口前6个子控件: ['PaneControl|MMUIRenderSubWindowHW', 'GroupControl|']
+2026-03-09 18:43:01,564 [INFO] [MainThread] 未找到会话列表控件
+2026-03-09 18:43:01,688 [INFO] [MainThread] 消息列表控件: Class=mmui::RecyclerListView Name=消息 Rect=(504,397,1151,848)[647x451] Children=6
+2026-03-09 18:43:01,696 [INFO] [CommandServer] 指令服务已启动: http://127.0.0.1:51234
+2026-03-09 18:43:01,696 [INFO] [MainThread] wechat_bridge 已启动 (监听模式)
+2026-03-09 18:43:02,388 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 私域联动就是把你抖音上搞来的粉
+2026-03-09 18:43:02,388 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 什么是互动既生命？
+2026-03-09 18:43:02,389 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 在抖音这地界，没人互动的视频就
+2026-03-09 18:43:02,389 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 什么是素材沉淀？
+2026-03-09 18:43:06,481 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:43:06,912 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:43:06,912 [INFO] [MainThread] 下一次扫描安排在 3.09 秒后
+2026-03-09 18:43:13,553 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 素材沉淀就是把你拍过的、用过的
+2026-03-09 18:43:13,553 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:43:13,853 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:43:13,853 [INFO] [MainThread] 下一次扫描安排在 1.53 秒后
+2026-03-09 18:43:16,274 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:43:16,673 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:43:16,673 [INFO] [MainThread] 下一次扫描安排在 2.75 秒后
+2026-03-09 18:43:20,546 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:43:20,951 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:43:20,951 [INFO] [MainThread] 下一次扫描安排在 1.97 秒后
+2026-03-09 18:43:23,239 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:43:23,597 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:43:23,597 [INFO] [MainThread] 下一次扫描安排在 2.04 秒后
+2026-03-09 18:43:25,802 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:43:26,081 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:43:26,081 [INFO] [MainThread] 下一次扫描安排在 2.32 秒后
+2026-03-09 18:43:28,441 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:43:28,840 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:43:28,841 [INFO] [MainThread] 下一次扫描安排在 1.96 秒后
+2026-03-09 18:43:31,011 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:43:31,400 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:43:31,400 [INFO] [MainThread] 下一次扫描安排在 2.16 秒后
+2026-03-09 18:43:33,665 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:43:34,008 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:43:34,008 [INFO] [MainThread] 下一次扫描安排在 3.52 秒后
+2026-03-09 18:43:38,228 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:43:38,619 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:43:38,619 [INFO] [MainThread] 下一次扫描安排在 2.05 秒后
+2026-03-09 18:43:40,726 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:43:41,141 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:43:41,141 [INFO] [MainThread] 下一次扫描安排在 1.62 秒后
+2026-03-09 18:43:43,235 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 18:43:43,599 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 18:43:43,599 [INFO] [MainThread] 下一次扫描安排在 3.12 秒后
+2026-03-09 18:57:41,858 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-09 18:57:41,978 [INFO] [MainThread] Debug: _find_main_window start (Optimized)
+2026-03-09 18:57:41,979 [WARNING] [MainThread] 检测到名为 '微信' 的窗口，但类名为 'Qt51514QWindowIcon' (预期: mmui::MainWindow)
+2026-03-09 18:57:41,984 [INFO] [MainThread] Main window found, calling _log_window_tree
+2026-03-09 18:57:41,985 [INFO] [MainThread] Preparing to log tree for handle: 394984
+2026-03-09 18:57:42,002 [INFO] [MainThread] Window has 3 children
+2026-03-09 18:57:42,003 [INFO] [MainThread] WindowChild L1: PaneControl | MMUIRenderSubWindowHW
+2026-03-09 18:57:42,005 [INFO] [MainThread] WindowChild L1: TitleBarControl | 
+2026-03-09 18:57:42,007 [INFO] [MainThread] WindowChild L1: GroupControl | 
+2026-03-09 18:57:42,011 [INFO] [MainThread] WindowChild L2: CustomControl | 
+2026-03-09 18:57:42,012 [INFO] [MainThread] WindowChild L2: ToolBarControl | 
+2026-03-09 18:57:42,015 [INFO] [MainThread] 找到微信主窗口: title=Weixin rect=(232,327,1153,1053)[921x726]
+2026-03-09 18:57:42,388 [INFO] [MainThread] 未读会话数量(本轮): 0
+2026-03-09 19:01:07,181 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-09 19:01:07,249 [INFO] [MainThread] Debug: _find_main_window start (Optimized)
+2026-03-09 19:01:07,250 [INFO] [MainThread] FindWindowW found EXACT match handle: 394984 with ClassName: Qt51514QWindowIcon
+2026-03-09 19:01:07,253 [INFO] [MainThread] Window from handle validated via UIA
+2026-03-09 19:01:07,253 [INFO] [MainThread] Window PID: 2832
+2026-03-09 19:01:07,254 [INFO] [MainThread] Main window found, calling _log_window_tree
+2026-03-09 19:01:07,254 [INFO] [MainThread] Preparing to log tree for handle: 394984
+2026-03-09 19:01:07,265 [INFO] [MainThread] Window has 3 children
+2026-03-09 19:01:07,266 [INFO] [MainThread] WindowChild L1: PaneControl | MMUIRenderSubWindowHW
+2026-03-09 19:01:07,269 [INFO] [MainThread] WindowChild L1: TitleBarControl | 
+2026-03-09 19:01:07,271 [INFO] [MainThread] WindowChild L1: GroupControl | 
+2026-03-09 19:01:07,273 [INFO] [MainThread] WindowChild L2: CustomControl | 
+2026-03-09 19:01:07,273 [INFO] [MainThread] WindowChild L2: ToolBarControl | 
+2026-03-09 19:01:07,275 [INFO] [MainThread] 找到微信主窗口: title=Weixin rect=(232,327,1153,1053)[921x726]
+2026-03-09 19:01:07,601 [INFO] [MainThread] 未读会话数量(本轮): 0
+2026-03-09 19:11:17,572 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-09 19:11:17,661 [INFO] [MainThread] 检查微信环境状态...
+2026-03-09 19:11:17,662 [INFO] [MainThread] Debug: _find_main_window start (Optimized)
+2026-03-09 19:11:17,662 [INFO] [MainThread] FindWindowW found EXACT match handle: 394984 with ClassName: Qt51514QWindowIcon
+2026-03-09 19:11:17,666 [INFO] [MainThread] Window from handle validated via UIA
+2026-03-09 19:11:17,666 [INFO] [MainThread] Window PID: 2832
+2026-03-09 19:11:17,667 [INFO] [MainThread] Main window found, calling _log_window_tree
+2026-03-09 19:11:17,667 [INFO] [MainThread] Preparing to log tree for handle: 394984
+2026-03-09 19:11:17,682 [INFO] [MainThread] Window has 2 children
+2026-03-09 19:11:17,683 [INFO] [MainThread] WindowChild L1: PaneControl | MMUIRenderSubWindowHW
+2026-03-09 19:11:17,685 [INFO] [MainThread] WindowChild L1: GroupControl | 
+2026-03-09 19:11:17,687 [INFO] [MainThread] WindowChild L2: CustomControl | 
+2026-03-09 19:11:17,688 [INFO] [MainThread] WindowChild L2: ToolBarControl | 
+2026-03-09 19:11:17,690 [INFO] [MainThread] 检测到正常的微信窗口 (ClassName=mmui::MainWindow)
+2026-03-09 19:11:35,761 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-09 19:11:35,783 [INFO] [MainThread] 微信主窗口已就绪: ClassName=mmui::MainWindow
+2026-03-09 19:11:35,785 [INFO] [MainThread] 主窗口就绪快照: Name=微信 Class=mmui::MainWindow PID=2832 Handle=394984 Rect=(232,327,1153,1053)[921x726]
+2026-03-09 19:11:35,797 [INFO] [MainThread] 主窗口前6个子控件: ['PaneControl|MMUIRenderSubWindowHW', 'GroupControl|']
+2026-03-09 19:11:36,212 [INFO] [MainThread] 未找到会话列表控件
+2026-03-09 19:11:36,348 [INFO] [MainThread] 消息列表控件: Class=mmui::RecyclerListView Name=消息 Rect=(504,397,1151,848)[647x451] Children=6
+2026-03-09 19:11:36,357 [INFO] [CommandServer] 指令服务已启动: http://127.0.0.1:51234
+2026-03-09 19:11:36,357 [INFO] [MainThread] wechat_bridge 已启动 (监听模式)
+2026-03-09 19:11:36,895 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 在抖音这地界，没人互动的视频就
+2026-03-09 19:11:36,895 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 什么是素材沉淀？
+2026-03-09 19:11:36,895 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 素材沉淀就是把你拍过的、用过的
+2026-03-09 19:11:36,896 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 你好
+2026-03-09 19:11:36,896 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:11:37,231 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:11:37,231 [INFO] [MainThread] 下一次扫描安排在 0.75 秒后
+2026-03-09 19:11:38,731 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:11:39,046 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:11:39,046 [INFO] [MainThread] 下一次扫描安排在 1.75 秒后
+2026-03-09 19:11:40,729 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:11:41,123 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:11:41,123 [INFO] [MainThread] 下一次扫描安排在 1.59 秒后
+2026-03-09 19:11:46,489 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 哎哟，来了？有啥想问的直接说，
+2026-03-09 19:11:46,489 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:11:46,964 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:11:46,965 [INFO] [MainThread] 下一次扫描安排在 1.02 秒后
+2026-03-09 19:11:48,777 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:11:49,203 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:11:49,204 [INFO] [MainThread] 下一次扫描安排在 1.97 秒后
+2026-03-09 19:11:50,897 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:11:51,244 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:11:51,244 [INFO] [MainThread] 下一次扫描安排在 1.05 秒后
+2026-03-09 19:21:06,968 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-09 19:21:07,037 [INFO] [MainThread] 检查微信环境状态...
+2026-03-09 19:21:07,038 [INFO] [MainThread] Debug: _find_main_window start (Optimized)
+2026-03-09 19:21:07,038 [INFO] [MainThread] FindWindowW found EXACT match handle: 394984 with ClassName: Qt51514QWindowIcon
+2026-03-09 19:21:07,041 [INFO] [MainThread] Window from handle validated via UIA
+2026-03-09 19:21:07,042 [INFO] [MainThread] Window PID: 2832
+2026-03-09 19:21:07,042 [INFO] [MainThread] Main window found, calling _log_window_tree
+2026-03-09 19:21:07,042 [INFO] [MainThread] Preparing to log tree for handle: 394984
+2026-03-09 19:21:07,056 [INFO] [MainThread] Window has 2 children
+2026-03-09 19:21:07,056 [INFO] [MainThread] WindowChild L1: PaneControl | MMUIRenderSubWindowHW
+2026-03-09 19:21:07,058 [INFO] [MainThread] WindowChild L1: GroupControl | 
+2026-03-09 19:21:07,060 [INFO] [MainThread] WindowChild L2: CustomControl | 
+2026-03-09 19:21:07,061 [INFO] [MainThread] WindowChild L2: ToolBarControl | 
+2026-03-09 19:21:07,062 [INFO] [MainThread] 检测到正常的微信窗口 (ClassName=mmui::MainWindow)
+2026-03-09 19:21:25,218 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-09 19:21:25,232 [INFO] [MainThread] 微信主窗口已就绪: ClassName=mmui::MainWindow
+2026-03-09 19:21:25,235 [INFO] [MainThread] 主窗口就绪快照: Name=微信 Class=mmui::MainWindow PID=2832 Handle=394984 Rect=(232,327,1153,1053)[921x726]
+2026-03-09 19:21:25,249 [INFO] [MainThread] 主窗口前6个子控件: ['PaneControl|MMUIRenderSubWindowHW', 'GroupControl|']
+2026-03-09 19:21:25,714 [INFO] [MainThread] 未找到会话列表控件
+2026-03-09 19:21:25,826 [INFO] [MainThread] 消息列表控件: Class=mmui::RecyclerListView Name=消息 Rect=(504,397,1151,848)[647x451] Children=7
+2026-03-09 19:21:25,835 [INFO] [CommandServer] 指令服务已启动: http://127.0.0.1:51234
+2026-03-09 19:21:25,835 [INFO] [MainThread] wechat_bridge 已启动 (监听模式)
+2026-03-09 19:21:26,470 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 在抖音这地界，没人互动的视频就
+2026-03-09 19:21:26,471 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 什么是素材沉淀？
+2026-03-09 19:21:26,471 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 素材沉淀就是把你拍过的、用过的
+2026-03-09 19:21:26,472 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 你好
+2026-03-09 19:21:26,472 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 哎哟，来了？有啥想问的直接说，
+2026-03-09 19:21:26,472 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:21:26,811 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:21:26,811 [INFO] [MainThread] 下一次扫描安排在 1.74 秒后
+2026-03-09 19:21:28,380 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:21:28,818 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:21:28,818 [INFO] [MainThread] 下一次扫描安排在 1.90 秒后
+2026-03-09 19:21:30,624 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:21:31,070 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:21:31,070 [INFO] [MainThread] 下一次扫描安排在 1.65 秒后
+2026-03-09 19:21:32,708 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:21:33,083 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:21:33,083 [INFO] [MainThread] 下一次扫描安排在 1.22 秒后
+2026-03-09 19:21:34,772 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:21:35,150 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:21:35,150 [INFO] [MainThread] 下一次扫描安排在 0.64 秒后
+2026-03-09 19:21:36,873 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:21:37,337 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:21:37,337 [INFO] [MainThread] 下一次扫描安排在 1.51 秒后
+2026-03-09 19:21:39,104 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:21:39,433 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:21:39,434 [INFO] [MainThread] 下一次扫描安排在 1.99 秒后
+2026-03-09 19:51:47,627 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-09 19:51:47,707 [INFO] [MainThread] 检查微信环境状态...
+2026-03-09 19:51:47,708 [INFO] [MainThread] Debug: _find_main_window start (Optimized)
+2026-03-09 19:51:47,708 [INFO] [MainThread] FindWindowW found EXACT match handle: 394984 with ClassName: Qt51514QWindowIcon
+2026-03-09 19:51:47,713 [INFO] [MainThread] Window from handle validated via UIA
+2026-03-09 19:51:47,713 [INFO] [MainThread] Window PID: 2832
+2026-03-09 19:51:47,714 [INFO] [MainThread] Main window found, calling _log_window_tree
+2026-03-09 19:51:47,714 [INFO] [MainThread] Preparing to log tree for handle: 394984
+2026-03-09 19:51:47,736 [INFO] [MainThread] Window has 2 children
+2026-03-09 19:51:47,737 [INFO] [MainThread] WindowChild L1: PaneControl | MMUIRenderSubWindowHW
+2026-03-09 19:51:47,740 [INFO] [MainThread] WindowChild L1: GroupControl | 
+2026-03-09 19:51:47,742 [INFO] [MainThread] WindowChild L2: CustomControl | 
+2026-03-09 19:51:47,743 [INFO] [MainThread] WindowChild L2: ToolBarControl | 
+2026-03-09 19:51:47,745 [INFO] [MainThread] 检测到正常的微信窗口 (ClassName=mmui::MainWindow)
+2026-03-09 19:52:06,313 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-09 19:52:06,337 [INFO] [MainThread] 微信主窗口已就绪: ClassName=mmui::MainWindow
+2026-03-09 19:52:06,338 [INFO] [MainThread] 主窗口就绪快照: Name=微信 Class=mmui::MainWindow PID=2832 Handle=394984 Rect=(232,327,1153,1053)[921x726]
+2026-03-09 19:52:06,354 [INFO] [MainThread] 主窗口前6个子控件: ['PaneControl|MMUIRenderSubWindowHW', 'GroupControl|']
+2026-03-09 19:52:06,858 [INFO] [MainThread] 未找到会话列表控件
+2026-03-09 19:52:07,002 [INFO] [MainThread] 消息列表控件: Class=mmui::RecyclerListView Name=消息 Rect=(504,397,1151,848)[647x451] Children=7
+2026-03-09 19:52:07,010 [INFO] [CommandServer] 指令服务已启动: http://127.0.0.1:51234
+2026-03-09 19:52:07,010 [INFO] [MainThread] wechat_bridge 已启动 (监听模式)
+2026-03-09 19:52:07,574 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 在抖音这地界，没人互动的视频就
+2026-03-09 19:52:07,574 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 什么是素材沉淀？
+2026-03-09 19:52:07,574 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 素材沉淀就是把你拍过的、用过的
+2026-03-09 19:52:07,574 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 你好
+2026-03-09 19:52:07,575 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 哎哟，来了？有啥想问的直接说，
+2026-03-09 19:52:08,212 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:52:08,534 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:52:08,535 [INFO] [MainThread] 下一次扫描安排在 0.71 秒后
+2026-03-09 19:52:10,214 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:52:10,609 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:52:10,609 [INFO] [MainThread] 下一次扫描安排在 0.79 秒后
+2026-03-09 19:52:12,242 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:52:12,616 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:52:12,616 [INFO] [MainThread] 下一次扫描安排在 0.51 秒后
+2026-03-09 19:52:14,522 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:52:14,841 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:52:14,841 [INFO] [MainThread] 下一次扫描安排在 0.77 秒后
+2026-03-09 19:52:16,713 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:52:17,029 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:52:17,030 [INFO] [MainThread] 下一次扫描安排在 0.53 秒后
+2026-03-09 19:52:18,998 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:52:19,517 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:52:19,518 [INFO] [MainThread] 下一次扫描安排在 1.50 秒后
+2026-03-09 19:52:21,186 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:52:21,547 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:52:21,547 [INFO] [MainThread] 下一次扫描安排在 0.51 秒后
+2026-03-09 19:52:23,632 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:52:23,993 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:52:23,993 [INFO] [MainThread] 下一次扫描安排在 0.89 秒后
+2026-03-09 19:52:25,882 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:52:26,184 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:52:26,184 [INFO] [MainThread] 下一次扫描安排在 1.26 秒后
+2026-03-09 19:52:28,148 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:52:28,499 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:52:28,500 [INFO] [MainThread] 下一次扫描安排在 1.47 秒后
+2026-03-09 19:52:30,230 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:52:30,637 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:52:30,637 [INFO] [MainThread] 下一次扫描安排在 1.25 秒后
+2026-03-09 19:52:32,512 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:52:32,924 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:52:32,924 [INFO] [MainThread] 下一次扫描安排在 1.70 秒后
+2026-03-09 19:52:34,866 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:52:35,164 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:52:35,164 [INFO] [MainThread] 下一次扫描安排在 1.53 秒后
+2026-03-09 19:52:36,868 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:52:37,278 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:52:37,278 [INFO] [MainThread] 下一次扫描安排在 1.60 秒后
+2026-03-09 19:52:39,196 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:52:39,594 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:52:39,594 [INFO] [MainThread] 下一次扫描安排在 0.70 秒后
+2026-03-09 19:52:41,557 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:52:41,918 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:52:41,918 [INFO] [MainThread] 下一次扫描安排在 1.66 秒后
+2026-03-09 19:52:43,864 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:52:44,240 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:52:44,240 [INFO] [MainThread] 下一次扫描安排在 1.81 秒后
+2026-03-09 19:52:45,864 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:52:46,144 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:52:46,144 [INFO] [MainThread] 下一次扫描安排在 1.02 秒后
+2026-03-09 19:52:48,022 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:52:48,385 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:52:48,385 [INFO] [MainThread] 下一次扫描安排在 2.00 秒后
+2026-03-09 19:52:50,117 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:52:50,528 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:52:50,528 [INFO] [MainThread] 下一次扫描安排在 1.51 秒后
+2026-03-09 19:52:52,579 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:52:52,975 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:52:52,975 [INFO] [MainThread] 下一次扫描安排在 1.05 秒后
+2026-03-09 19:52:54,821 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:52:55,254 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:52:55,254 [INFO] [MainThread] 下一次扫描安排在 1.75 秒后
+2026-03-09 19:52:56,999 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:52:57,501 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:52:57,502 [INFO] [MainThread] 下一次扫描安排在 1.92 秒后
+2026-03-09 19:52:59,261 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:52:59,699 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:52:59,699 [INFO] [MainThread] 下一次扫描安排在 1.55 秒后
+2026-03-09 19:53:01,683 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:53:01,975 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:53:01,975 [INFO] [MainThread] 下一次扫描安排在 1.44 秒后
+2026-03-09 19:53:03,811 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:53:04,202 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:53:04,202 [INFO] [MainThread] 下一次扫描安排在 1.90 秒后
+2026-03-09 19:53:05,861 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:53:06,154 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:53:06,154 [INFO] [MainThread] 下一次扫描安排在 1.38 秒后
+2026-03-09 19:53:08,027 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:53:08,324 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:53:08,324 [INFO] [MainThread] 下一次扫描安排在 1.35 秒后
+2026-03-09 19:53:10,235 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:53:10,585 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:53:10,586 [INFO] [MainThread] 下一次扫描安排在 1.43 秒后
+2026-03-09 19:53:12,468 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:53:12,830 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:53:12,831 [INFO] [MainThread] 下一次扫描安排在 1.56 秒后
+2026-03-09 19:53:14,681 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:53:15,086 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:53:15,087 [INFO] [MainThread] 下一次扫描安排在 1.79 秒后
+2026-03-09 19:53:16,881 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:53:17,293 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:53:17,293 [INFO] [MainThread] 下一次扫描安排在 1.83 秒后
+2026-03-09 19:53:19,294 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:53:19,714 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:53:19,714 [INFO] [MainThread] 下一次扫描安排在 1.10 秒后
+2026-03-09 19:53:21,507 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:53:21,869 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:53:21,869 [INFO] [MainThread] 下一次扫描安排在 1.13 秒后
+2026-03-09 19:53:23,641 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:53:24,031 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:53:24,031 [INFO] [MainThread] 下一次扫描安排在 0.61 秒后
+2026-03-09 19:53:25,913 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:53:26,255 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:53:26,255 [INFO] [MainThread] 下一次扫描安排在 0.59 秒后
+2026-03-09 19:53:28,164 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:53:28,464 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:53:28,465 [INFO] [MainThread] 下一次扫描安排在 0.71 秒后
+2026-03-09 19:53:30,190 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:53:30,596 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:53:30,596 [INFO] [MainThread] 下一次扫描安排在 1.14 秒后
+2026-03-09 19:53:32,255 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:53:32,615 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:53:32,615 [INFO] [MainThread] 下一次扫描安排在 1.98 秒后
+2026-03-09 19:53:34,474 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:53:34,897 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:53:34,897 [INFO] [MainThread] 下一次扫描安排在 1.10 秒后
+2026-03-09 19:53:36,491 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:53:36,779 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:53:36,779 [INFO] [MainThread] 下一次扫描安排在 1.07 秒后
+2026-03-09 19:53:38,585 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:53:38,942 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:53:38,942 [INFO] [MainThread] 下一次扫描安排在 1.11 秒后
+2026-03-09 19:53:40,814 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:53:41,101 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:53:41,101 [INFO] [MainThread] 下一次扫描安排在 1.16 秒后
+2026-03-09 19:53:42,837 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:53:43,288 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:53:43,288 [INFO] [MainThread] 下一次扫描安排在 0.58 秒后
+2026-03-09 19:53:44,943 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:53:45,370 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:53:45,370 [INFO] [MainThread] 下一次扫描安排在 1.82 秒后
+2026-03-09 19:53:47,278 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:53:47,687 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:53:47,688 [INFO] [MainThread] 下一次扫描安排在 0.89 秒后
+2026-03-09 19:53:49,440 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:53:49,854 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:53:49,854 [INFO] [MainThread] 下一次扫描安排在 1.48 秒后
+2026-03-09 19:53:51,566 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 19:53:51,900 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 19:53:51,900 [INFO] [MainThread] 下一次扫描安排在 1.57 秒后
+2026-03-09 20:24:48,106 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-09 20:24:48,196 [INFO] [MainThread] 检查微信环境状态...
+2026-03-09 20:24:48,196 [INFO] [MainThread] Debug: _find_main_window start (Optimized)
+2026-03-09 20:24:48,196 [INFO] [MainThread] FindWindowW found EXACT match handle: 394984 with ClassName: Qt51514QWindowIcon
+2026-03-09 20:24:48,199 [INFO] [MainThread] Window from handle validated via UIA
+2026-03-09 20:24:48,199 [INFO] [MainThread] Window PID: 2832
+2026-03-09 20:24:48,199 [INFO] [MainThread] Main window found, calling _log_window_tree
+2026-03-09 20:24:48,200 [INFO] [MainThread] Preparing to log tree for handle: 394984
+2026-03-09 20:24:48,214 [INFO] [MainThread] Window has 2 children
+2026-03-09 20:24:48,215 [INFO] [MainThread] WindowChild L1: PaneControl | MMUIRenderSubWindowHW
+2026-03-09 20:24:48,216 [INFO] [MainThread] WindowChild L1: GroupControl | 
+2026-03-09 20:24:48,218 [INFO] [MainThread] WindowChild L2: CustomControl | 
+2026-03-09 20:24:48,221 [INFO] [MainThread] WindowChild L2: ToolBarControl | 
+2026-03-09 20:24:48,222 [INFO] [MainThread] 检测到正常的微信窗口 (ClassName=mmui::MainWindow)
+2026-03-09 20:25:07,072 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-09 20:25:07,089 [INFO] [MainThread] 微信主窗口已就绪: ClassName=mmui::MainWindow
+2026-03-09 20:25:07,090 [INFO] [MainThread] 主窗口就绪快照: Name=微信 Class=mmui::MainWindow PID=2832 Handle=394984 Rect=(232,327,1153,1053)[921x726]
+2026-03-09 20:25:07,104 [INFO] [MainThread] 主窗口前6个子控件: ['PaneControl|MMUIRenderSubWindowHW', 'GroupControl|']
+2026-03-09 20:25:07,559 [INFO] [MainThread] 未找到会话列表控件
+2026-03-09 20:25:07,661 [INFO] [MainThread] 消息列表控件: Class=mmui::RecyclerListView Name=消息 Rect=(504,397,1151,848)[647x451] Children=7
+2026-03-09 20:25:07,670 [INFO] [CommandServer] 指令服务已启动: http://127.0.0.1:51234
+2026-03-09 20:25:07,670 [INFO] [MainThread] wechat_bridge 已启动 (监听模式)
+2026-03-09 20:25:08,152 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 在抖音这地界，没人互动的视频就
+2026-03-09 20:25:08,152 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 什么是素材沉淀？
+2026-03-09 20:25:08,153 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 素材沉淀就是把你拍过的、用过的
+2026-03-09 20:25:08,153 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 你好
+2026-03-09 20:25:08,153 [INFO] [MainThread] ==> 正在推送到 AI 助手界面: 哎哟，来了？有啥想问的直接说，
+2026-03-09 20:25:08,755 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 20:25:09,138 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 20:25:09,138 [INFO] [MainThread] 下一次扫描安排在 0.34 秒后
+2026-03-09 20:25:10,927 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 20:25:11,329 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 20:25:11,329 [INFO] [MainThread] 下一次扫描安排在 0.70 秒后
+2026-03-09 20:25:13,158 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 20:25:13,527 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 20:25:13,527 [INFO] [MainThread] 下一次扫描安排在 0.51 秒后
+2026-03-09 20:25:15,151 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 20:25:15,534 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 20:25:15,535 [INFO] [MainThread] 下一次扫描安排在 0.67 秒后
+2026-03-09 20:25:16,936 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 20:25:17,272 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 20:25:17,272 [INFO] [MainThread] 下一次扫描安排在 0.34 秒后
+2026-03-09 20:25:19,158 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 20:25:19,595 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 20:25:19,595 [INFO] [MainThread] 下一次扫描安排在 1.89 秒后
+2026-03-09 20:25:21,375 [INFO] [MainThread] 准备扫描未读会话...
+2026-03-09 20:25:21,815 [INFO] [MainThread] 发现 0 个未读会话
+2026-03-09 20:25:21,815 [INFO] [MainThread] 下一次扫描安排在 1.22 秒后
+2026-03-09 20:31:44,370 [INFO] [MainThread] 已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持
+2026-03-09 20:31:44,441 [INFO] [MainThread] 检查微信环境状态...
+2026-03-09 20:31:44,442 [INFO] [MainThread] Debug: _find_main_window start (Optimized)
+2026-03-09 20:31:44,442 [INFO] [MainThread] FindWindowW found EXACT match handle: 394984 with ClassName: Qt51514QWindowIcon
+2026-03-09 20:31:44,445 [INFO] [MainThread] Window from handle validated via UIA
+2026-03-09 20:31:44,446 [INFO] [MainThread] Window PID: 2832
+2026-03-09 20:31:44,446 [INFO] [MainThread] Main window found, calling _log_window_tree
+2026-03-09 20:31:44,446 [INFO] [MainThread] Preparing to log tree for handle: 394984
+2026-03-09 20:31:44,461 [INFO] [MainThread] Window has 2 children
+2026-03-09 20:31:44,462 [INFO] [MainThread] WindowChild L1: PaneControl | MMUIRenderSubWindowHW
+2026-03-09 20:31:44,464 [INFO] [MainThread] WindowChild L1: GroupControl | 
+2026-03-09 20:31:44,467 [INFO] [MainThread] WindowChild L2: CustomControl | 
+2026-03-09 20:31:44,468 [INFO] [MainThread] WindowChild L2: ToolBarControl | 
+2026-03-09 20:31:44,469 [INFO] [MainThread] 检测到正常的微信窗口 (ClassName=mmui::MainWindow)
