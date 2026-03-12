@@ -5,7 +5,7 @@ java:
   retry_backoff_base_seconds: 0.6
 
 window:
-  class_name: "mmui::MainWindow"
+  class_name: "WeChatMainWndForPC"
   name: "微信"
 
 listener:
