@@ -8,18 +8,17 @@ from . import utils
 
 if TYPE_CHECKING:
     from .ui import WeChatUI
-    from .network import Reporter, Poller
+    from .network import Poller
 
 
 class Listener:
-    def __init__(self, cfg: BridgeConfig, ui: "WeChatUI", reporter: "Reporter", logger: logging.Logger, poller: "Poller" = None) -> None:
+    def __init__(self, cfg: BridgeConfig, ui: "WeChatUI", logger: logging.Logger, poller: "Poller" = None) -> None:
         self._cfg = cfg
         self._ui = ui
-        self._reporter = reporter
         self._logger = logger
         self._poller = poller
         self._processed_sigs: Set[str] = set()
-        self._next_unread_scan_time = time.time() + random.uniform(2.0, 5.0)
+        self._next_unread_scan_time = time.time()
 
     def process_cycle(self) -> None:
         try:
@@ -51,8 +50,6 @@ class Listener:
                         if not contact:
                             contact = self._ui.get_current_chat_title(self._ui.get_main_window())
                         contact = self._ui._normalize_contact_name(contact or "") or "unknown"
-                        
-                        time.sleep(random.uniform(1.0, 2.5))
                         
                         self._fetch_and_report(contact)
                     except Exception as e:
@@ -90,7 +87,5 @@ class Listener:
                 if self._poller is not None:
                     self._logger.info(f"==> 正在推送到 AI 助手界面: {msg['content'][:15]}")
                     self._poller.enqueue(msg)
-                
-                self._reporter.submit(msg)
         except Exception as e:
             self._logger.warning(f"上报异常: {e}")

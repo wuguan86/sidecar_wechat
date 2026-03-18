@@ -7,7 +7,7 @@ import logging
 from .config import load_config
 from .logger import setup_logging
 from .ui import WeChatUI, inspect_window_tree
-from .network import JavaClient, Reporter, Poller, CommandServer
+from .network import Poller, CommandServer
 from .listener import Listener
 from . import utils
 
@@ -53,7 +53,7 @@ def _warmup_uia(logger: logging.Logger) -> None:
         SPIF_SENDCHANGE = 0x0002
         SPIF_UPDATEINIFILE = 0x0001
         import ctypes
-        ctypes.windll.user32.SystemParametersInfoW(SPI_SETSCREENREADER, 1, None, SPIF_UPDATEINIFILE | SPIF_SENDCHANGE)
+        ctypes.windll.user32.SystemParametersInfoW(SPI_SETSCREENREADER, 1, None, 0)
         logger.info("已尝试设置 SPI_SETSCREENREADER 以激活无障碍支持")
     except Exception as e:
         logger.warning("设置 SPI_SETSCREENREADER 失败: %s", e)
@@ -165,6 +165,26 @@ def main() -> int:
             pass
 
     ui_inst = WeChatUI(cfg, logger_inst)
+    poller = Poller(ui_inst, logger_inst)
+    readiness_state = {
+        "processReady": True,
+        "wechatWindowReady": False,
+        "listenerReady": False,
+    }
+
+    def state_provider() -> dict:
+        if not readiness_state["wechatWindowReady"]:
+            phase = "waiting_wechat_window"
+        elif not readiness_state["listenerReady"]:
+            phase = "initializing_listener"
+        else:
+            phase = "ready"
+        return {
+            "state": phase,
+            "processReady": readiness_state["processReady"],
+            "wechatWindowReady": readiness_state["wechatWindowReady"],
+            "listenerReady": readiness_state["listenerReady"],
+        }
 
     def wait_for_wechat_window() -> None:
         last_tip_time = 0.0
@@ -184,6 +204,7 @@ def main() -> int:
                         children = []
                     if len(children) > 0:
                         logger_inst.info("微信主窗口已就绪: ClassName=%s", class_name)
+                        readiness_state["wechatWindowReady"] = True
                         try:
                             ui_inst.log_ready_snapshot(win)
                         except Exception:
@@ -202,7 +223,7 @@ def main() -> int:
                 if time.time() - last_tip_time > 6.0:
                     logger_inst.info("未检测到微信窗口，请手动启动并登录微信")
                     last_tip_time = time.time()
-            time.sleep(1.5)
+            time.sleep(0.5)
     
     try:
         logger_inst.info("检查微信环境状态...")
@@ -218,17 +239,13 @@ def main() -> int:
     except Exception as e:
         logger_inst.warning(f"环境检查异常: {e}")
 
-    wait_for_wechat_window()
-    
-    java_client = JavaClient(cfg, logger_inst)
-    reporter = Reporter(java_client, logger_inst)
-    reporter.start()
-    
-    poller = Poller(ui_inst, logger_inst)
-    listener_inst = Listener(cfg, ui_inst, reporter, logger_inst, poller)
-    
-    server = CommandServer(cfg.server_host, cfg.server_port, ui_inst, poller, logger_inst)
+    server = CommandServer(cfg.server_host, cfg.server_port, ui_inst, poller, logger_inst, state_provider=state_provider)
     server.start()
+    logger_inst.info("wechat_bridge 指令服务已启动，开始等待微信窗口就绪")
+
+    wait_for_wechat_window()
+    listener_inst = Listener(cfg, ui_inst, logger_inst, poller)
+    readiness_state["listenerReady"] = True
     logger_inst.info("wechat_bridge 已启动 (监听模式) - 适配版本 3.9.12")
     try:
         while True:
@@ -237,7 +254,6 @@ def main() -> int:
     except KeyboardInterrupt:
         logger_inst.info("收到退出信号，正在停止...")
     finally:
-        reporter.stop()
         server.stop()
     return 0
 

@@ -8,11 +8,6 @@ from . import utils
 
 @dataclasses.dataclass(frozen=True)
 class BridgeConfig:
-    java_receive_url: str = "http://localhost:8080/api/wechat/receive"
-    java_timeout_seconds: float = 5.0
-    java_retry_max: int = 3
-    java_retry_backoff_base_seconds: float = 0.6
-
     # Changed default from mmui::MainWindow to WeChatMainWndForPC for version 3.9.12
     window_class_name: str = "WeChatMainWndForPC"
     window_name: str = "微信"
@@ -102,12 +97,6 @@ def load_config(config_path: str) -> BridgeConfig:
         parsed = _parse_simple_yaml(raw)
 
     cfg = BridgeConfig(
-        java_receive_url=str(_deep_get(parsed, ["java", "receive_url"], BridgeConfig.java_receive_url)),
-        java_timeout_seconds=float(_deep_get(parsed, ["java", "timeout_seconds"], BridgeConfig.java_timeout_seconds)),
-        java_retry_max=int(_deep_get(parsed, ["java", "retry_max"], BridgeConfig.java_retry_max)),
-        java_retry_backoff_base_seconds=float(
-            _deep_get(parsed, ["java", "retry_backoff_base_seconds"], BridgeConfig.java_retry_backoff_base_seconds)
-        ),
         window_class_name=str(_deep_get(parsed, ["window", "class_name"], BridgeConfig.window_class_name)),
         window_name=str(_deep_get(parsed, ["window", "name"], BridgeConfig.window_name)),
         scan_interval_seconds=float(_deep_get(parsed, ["listener", "scan_interval_seconds"], BridgeConfig.scan_interval_seconds)),
@@ -132,11 +121,8 @@ def load_config(config_path: str) -> BridgeConfig:
         log_backup_count=int(_deep_get(parsed, ["logging", "backup_count"], BridgeConfig.log_backup_count)),
     )
 
-    env_receive = os.getenv("JAVA_RECEIVE_URL")
     env_host = os.getenv("SIDECAR_SERVER_HOST")
     env_port = os.getenv("SIDECAR_SERVER_PORT")
-    if env_receive:
-        cfg = dataclasses.replace(cfg, java_receive_url=env_receive)
     if env_host:
         cfg = dataclasses.replace(cfg, server_host=env_host)
     if env_port:

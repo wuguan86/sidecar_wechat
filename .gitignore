@@ -1,0 +1,37 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+venv/
+ENV/
+
+# --- Build & Distribution (PyInstaller等打包产物) ---
+build/
+dist/
+# 如果你的 .spec 文件是自动生成的，可以忽略；如果是手写的配置，请删掉下面这一行
+# *.spec
+
+# --- Logs & Debug Outputs (自动化产生的日志和中间文件) ---
+*.log
+wechat_bridge.log
+@AutomationLog.txt
+inspect_output.txt
+控件树.txt
+debug_view.png
+
+# --- Configuration (包含敏感信息的配置文件) ---
+# 建议只保留一个 config.example.yaml 在 Git 里，真实的配置忽略掉
+config_dev.yaml
+config_prod.yaml
+config.yaml  # 如果里面有密码或Token，建议也忽略
+
+# --- IDEs ---
+.idea/
+.vscode/
+.trae/
+
+# --- OS ---
+.DS_Store
+Thumbs.db

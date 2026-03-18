@@ -1,16 +1,12 @@
-java:
-  receive_url: ""
-  timeout_seconds: 5
-  retry_max: 3
-  retry_backoff_base_seconds: 0.6
-
 window:
   class_name: "WeChatMainWndForPC"
   name: "微信"
 
 listener:
-  scan_interval_seconds: 1.2
-  scan_jitter_seconds: 0.6
+  scan_interval_seconds: 0.45
+  scan_jitter_seconds: 0.25
+  unread_scan_interval_min_seconds: 0.8
+  unread_scan_interval_max_seconds: 1.8
   unread_max_per_round: 5
   message_scan_limit: 10
 

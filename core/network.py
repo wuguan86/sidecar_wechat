@@ -4,14 +4,10 @@ import os
 import queue
 import sys
 import threading
-import time
-import random
-import requests
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any, Dict, List, Optional, TYPE_CHECKING
 
-from .config import BridgeConfig
 from . import utils
 
 if TYPE_CHECKING:
@@ -21,60 +17,6 @@ try:
     import pythoncom
 except ImportError:
     pythoncom = None
-
-
-class JavaClient:
-    def __init__(self, cfg: BridgeConfig, logger: logging.Logger) -> None:
-        self._cfg = cfg
-        self._logger = logger
-        self._session = requests.Session()
-
-    def post_message(self, payload: Dict[str, Any]) -> None:
-        if not self._cfg.java_receive_url:
-            return
-
-        for attempt in range(self._cfg.java_retry_max + 1):
-            try:
-                res = self._session.post(
-                    self._cfg.java_receive_url,
-                    json=payload,
-                    timeout=(self._cfg.java_timeout_seconds, self._cfg.java_timeout_seconds),
-                )
-                if 200 <= res.status_code < 300:
-                    return
-                self._logger.warning("Java 接口返回非 2xx: status=%s body=%s", res.status_code, res.text[:500])
-            except Exception as e:
-                self._logger.warning("上报 Java 失败: %s", e)
-
-            if attempt < self._cfg.java_retry_max:
-                backoff = self._cfg.java_retry_backoff_base_seconds * (2**attempt) * (0.7 + random.random() * 0.6)
-                time.sleep(backoff)
-
-
-class Reporter(threading.Thread):
-    def __init__(self, java_client: JavaClient, logger: logging.Logger) -> None:
-        super().__init__(name="Reporter", daemon=True)
-        self._java_client = java_client
-        self._logger = logger
-        self._q: "queue.Queue[Dict[str, Any]]" = queue.Queue()
-        self._stopping = threading.Event()
-
-    def submit(self, payload: Dict[str, Any]) -> None:
-        self._q.put(payload)
-
-    def stop(self) -> None:
-        self._stopping.set()
-        self._q.put({})
-
-    def run(self) -> None:
-        while not self._stopping.is_set():
-            payload = self._q.get()
-            if not payload:
-                continue
-            try:
-                self._java_client.post_message(payload)
-            except Exception as e:
-                self._logger.warning("Reporter 发送失败: %s", e)
 
 
 class Poller:
@@ -87,7 +29,7 @@ class Poller:
     def enqueue(self, payload: Dict[str, Any]) -> None:
         self._queue.put(payload)
 
-    def poll(self, timeout: float = 1.0) -> List[Dict[str, Any]]:
+    def poll(self, timeout: float = 0.2) -> List[Dict[str, Any]]:
         messages = []
         try:
             try:
@@ -144,7 +86,14 @@ class CommandHandler(BaseHTTPRequestHandler):
 
     def do_GET(self) -> None:  # noqa: N802
         if self.path.rstrip("/") == "/health":
-            self._json_response(HTTPStatus.OK, {"ok": True})
+            state_provider = getattr(self.server, "state_provider", None)
+            state = {}
+            if callable(state_provider):
+                try:
+                    state = state_provider() or {}
+                except Exception:
+                    state = {}
+            self._json_response(HTTPStatus.OK, {"ok": True, **state})
             return
 
         com_init = False
@@ -263,12 +212,21 @@ class CommandHandler(BaseHTTPRequestHandler):
 
 
 class CommandServer:
-    def __init__(self, host: str, port: int, ui: Any, poller: Poller, logger: logging.Logger) -> None:
+    def __init__(
+        self,
+        host: str,
+        port: int,
+        ui: Any,
+        poller: Poller,
+        logger: logging.Logger,
+        state_provider: Optional[Any] = None
+    ) -> None:
         self._host = host
         self._port = port
         self._ui = ui
         self._poller = poller
         self._logger = logger
+        self._state_provider = state_provider
         self._httpd: Optional[ThreadingHTTPServer] = None
         self._thread: Optional[threading.Thread] = None
 
@@ -277,6 +235,7 @@ class CommandServer:
         setattr(httpd, "ui", self._ui)
         setattr(httpd, "poller", self._poller)
         setattr(httpd, "logger", self._logger)
+        setattr(httpd, "state_provider", self._state_provider)
         
         full_state = _load_state_from_file()
         setattr(httpd, "marketing_like_state", full_state.get("like", {}))

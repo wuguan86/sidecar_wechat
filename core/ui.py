@@ -134,6 +134,12 @@ class WeChatUI:
         self._cached_main = None
         self._tree_logged_handle = None
         self._last_unread_debug_time = 0.0
+        
+        # ======== 新增：核心 UI 控件缓存 ========
+        self._cached_session_list = None
+        self._cached_message_list = None
+        self._cached_input_box = None
+        self._cached_chat_title_ctrl = None
 
     def _normalize_contact_name(self, name: str) -> str:
         if not name:
@@ -1004,107 +1010,67 @@ class WeChatUI:
         if auto is None:
             return None
             
-        # Strategy 1: Standard Name="会话" (For 3.9.12)
+        # 1. 优先使用缓存 (0毫秒级响应)
+        if self._cached_session_list and self._cached_session_list.Exists(0, 0):
+            return self._cached_session_list
+            
+        # 2. Strategy 1: Standard Name="会话" (For 3.9.12) - 原生底层 C++ 搜索，极快
         try:
             target = auto.ListControl(searchFromControl=window, searchDepth=12, Name="会话")
             if target and target.Exists(0, 0):
                 self._logger.debug("_locate_session_list Found Name='会话'")
+                self._cached_session_list = target
                 return target
         except Exception:
             pass
 
-        # Strategy 2: English Name="Session"
+        # 3. Strategy 2: English Name="Session"
         try:
             target = auto.ListControl(searchFromControl=window, searchDepth=12, Name="Session")
             if target and target.Exists(0, 0):
                 self._logger.debug("_locate_session_list Found Name='Session'")
+                self._cached_session_list = target
                 return target
         except Exception:
             pass
             
-        # Strategy 3: Geometric fallback (Left side list)
-        candidates = []
-        for ctrl in _iter_descendants(window, max_depth=25):
-            ct = _control_type_name(ctrl)
-            if ct not in {"ListControl", "PaneControl"}:
-                continue
-            rect = getattr(ctrl, "BoundingRectangle", None)
-            bbox = utils.rect_to_bbox(rect) if rect is not None else None
-            if bbox is None:
-                continue
-            left, top, right, bottom = bbox
-            width = right - left
-            height = bottom - top
-            if width < 160 or height < 200:
-                continue
-            if left > 280:
-                continue
-            
-            candidates.append((width * height, ctrl))
-            
-        if not candidates:
-            return None
-            
-        candidates.sort(key=lambda x: x[0], reverse=True)
-        return candidates[0][1]
+        self._logger.warning("未找到微信会话列表(Name='会话')，请确认微信版本。")
+        return None
 
     def _locate_message_list(self, window: Any) -> Optional[Any]:
         if auto is None:
             return None
             
-        # Strategy 1: Standard Name="消息" (For 3.9.12)
+        # 1. 优先使用缓存，并验证其是否真的可用
+        if self._cached_message_list:
+            try:
+                if self._cached_message_list.Exists(0, 0):
+                    # 简单测试一下是否能获取到边界，如果抛出异常说明底层句柄已失效
+                    _ = self._cached_message_list.BoundingRectangle
+                    return self._cached_message_list
+            except Exception:
+                pass
+            self._cached_message_list = None # 失效则清理
+            
+        # 2. 快速底层搜索 Name="消息"
         try:
             target = auto.ListControl(searchFromControl=window, searchDepth=15, Name="消息")
             if target and target.Exists(0, 0):
-                self._logger.debug("_locate_message_list Found Name='消息'")
+                self._cached_message_list = target
                 return target
         except Exception:
             pass
 
-        # Strategy 2: English Name="Message"
+        # 3. 英文系统兼容
         try:
             target = auto.ListControl(searchFromControl=window, searchDepth=15, Name="Message")
             if target and target.Exists(0, 0):
-                self._logger.debug("_locate_message_list Found Name='Message'")
+                self._cached_message_list = target
                 return target
         except Exception:
             pass
 
-        # Strategy 3: Fallback logic (Large area on right side)
-        candidates = []
-        roots = [window]
-        content_root = self._get_content_root(window)
-        if content_root != window:
-            roots.insert(0, content_root)
-
-        for root in roots:
-            for ctrl in _iter_descendants(root, max_depth=25):
-                ct = _control_type_name(ctrl)
-                if ct not in ("ListControl", "PaneControl"):
-                    continue
-                
-                rect = getattr(ctrl, "BoundingRectangle", None)
-                bbox = utils.rect_to_bbox(rect) if rect is not None else None
-                if bbox is None:
-                    continue
-                left, top, right, bottom = bbox
-                width = right - left
-                height = bottom - top
-                
-                if width < 200 or height < 200:
-                    continue
-                if left < 180:
-                    continue
-                candidates.append((width * height, ctrl))
-            
-            if candidates:
-                break
-
-        if not candidates:
-            return None
-            
-        candidates.sort(key=lambda x: x[0], reverse=True)
-        return candidates[0][1]
+        return None
 
     def find_unread_sessions(self) -> List[Any]:
         if auto is None:
@@ -1131,7 +1097,6 @@ class WeChatUI:
             return unread_items
 
     def _is_session_item_unread(self, item: Any) -> bool:
-        # 1. Check direct Name property for patterns like "张三 2条未读" (common in accessibility)
         item_name = getattr(item, "Name", "") or ""
         
         if item_name in ("服务号", "订阅号", "Subscription Accounts", "订阅号消息"):
@@ -1140,26 +1105,21 @@ class WeChatUI:
         if re.search(r"(\[\d+条\]|\d+条新消息|未读)", item_name):
             return True
 
-        # 2. Check for "Red Dot" or Badge controls
-        # In the control tree, we might see a TextControl with a number, or a Pane/Image with no name but specific dimensions
-        # or specific automation properties.
-        
-        # Since we lack specific examples from the tree, we look for ANY number that stands alone,
-        # or keywords in children.
-        
-        unread_keywords = ("未读", "条新消息", "new message", "badge", "reddot")
-        
-        for ctrl in _iter_descendants(item, max_depth=8):
-            name = (getattr(ctrl, "Name", "") or "").strip()
-            
-            # Check for numeric badge (e.g. "1", "99+")
-            if name and (re.fullmatch(r"\d+", name) or name == "99+"):
-                # Ensure it's not the time (e.g. "10:28")
-                # Time usually has colon. Simple numbers are likely badges.
-                return True
-                
-            if any(k in name for k in unread_keywords):
-                return True
+        # 彻底废弃极其卡顿的 _iter_descendants
+        # 微信的小红点通常在这个会话控件的最外层子节点中
+        try:
+            children = item.GetChildren() or []
+            for ctrl in children:
+                # 检查第一层和第二层子节点即可
+                sub_children = ctrl.GetChildren() or []
+                for sub_ctrl in sub_children:
+                    name = (getattr(sub_ctrl, "Name", "") or "").strip()
+                    if name and (re.fullmatch(r"\d+", name) or name == "99+"):
+                        return True
+                    if any(k in name for k in ("未读", "条新消息", "new message", "badge", "reddot")):
+                        return True
+        except Exception:
+            pass
                 
         return False
 
@@ -1254,54 +1214,119 @@ class WeChatUI:
             return bool(current_name and target_name and target_name in current_name)
 
     def get_current_chat_title(self, window: Any) -> Optional[str]:
-        if auto is None:
+        if auto is None or window is None:
             return None
-        rect = getattr(window, "BoundingRectangle", None)
-        bbox = utils.rect_to_bbox(rect) if rect is not None else None
-        if bbox is None:
-            return None
-        left, top, right, bottom = bbox
-        
-        header_top = top
-        header_bottom = min(bottom, top + 100)
-        header_left = left + 280
-        header_right = right
 
-        best = None
-        candidates = []
-        for ctrl in _iter_descendants(window, max_depth=25):
-            ct = _control_type_name(ctrl)
-            if ct not in ("TextControl", "ButtonControl", "PaneControl", "GroupControl", "CustomControl"):
-                continue
+        # 1. 缓存拦截
+        if self._cached_chat_title_ctrl:
+            try:
+                if self._cached_chat_title_ctrl.Exists(0, 0):
+                    name = (getattr(self._cached_chat_title_ctrl, "Name", "") or "").strip()
+                    if name and name not in ("微信", "文件传输助手", "聊天信息"):
+                        return name
+            except Exception:
+                pass
+            self._cached_chat_title_ctrl = None
 
-            text = (getattr(ctrl, "Name", "") or "").strip()
-            if not text:
-                continue
-                
-            r = getattr(ctrl, "BoundingRectangle", None)
-            b = utils.rect_to_bbox(r) if r is not None else None
-            if b is None:
-                continue
-                
-            cx = (b[0] + b[2]) // 2
-            cy = (b[1] + b[3]) // 2
-            
-            if not (header_left <= cx <= header_right and header_top <= cy <= header_bottom):
-                continue
-                
-            if len(text) > 40:
-                continue
-            
-            if text in ("微信", "通讯录", "发现", "我", "朋友圈", "小程序", "视频号", "搜一搜", "看一看", "文件传输助手", "置顶", "最小化", "最大化", "关闭", "还原"):
-                continue
+        try:
+            msg_list = self._locate_message_list(window)
+            msg_bbox = utils.rect_to_bbox(getattr(msg_list, "BoundingRectangle", None)) if msg_list else None
 
-            candidates.append((cy, text))
+            info_btn = auto.ButtonControl(searchFromControl=window, searchDepth=20, Name="聊天信息")
+            if info_btn and info_btn.Exists(0, 0):
+                info_bbox = utils.rect_to_bbox(getattr(info_btn, "BoundingRectangle", None))
+                if info_bbox:
+                    info_left, info_top, _, info_bottom = info_bbox
+                    anchor_top = info_top - 18
+                    anchor_bottom = info_bottom + 18
+                    anchor_left_limit = (msg_bbox[0] - 40) if msg_bbox else 500
+                    anchor_right_limit = info_left + 6
 
-        if candidates:
-            candidates.sort(key=lambda x: x[0])
-            best = candidates[0][1]
-            
-        return best
+                    anchor_candidates = []
+                    for ctrl in _iter_descendants(window, max_depth=18):
+                        try:
+                            if _control_type_name(ctrl) != "TextControl":
+                                continue
+                            name = (getattr(ctrl, "Name", "") or "").strip()
+                            if not name:
+                                continue
+                            if name in ("微信", "聊天信息", "文件传输助手"):
+                                continue
+                            if re.search(r"20\d{2}年\d{1,2}月\d{1,2}日", name):
+                                continue
+                            if re.match(r"^([上下]午)?\s*\d{1,2}:\d{2}(?::\d{2})?$", name):
+                                continue
+                            if re.fullmatch(r"\d{1,2}:\d{2}(:\d{2})?", name):
+                                continue
+                            if name.isdigit():
+                                continue
+                            cbox = utils.rect_to_bbox(getattr(ctrl, "BoundingRectangle", None))
+                            if not cbox:
+                                continue
+                            cl, ct, cr, cb = cbox
+                            if ct < 0 or cb < 0:
+                                continue
+                            if cl < anchor_left_limit or cr > anchor_right_limit:
+                                continue
+                            if cb < anchor_top or ct > anchor_bottom:
+                                continue
+                            anchor_candidates.append((abs(ct - info_top), abs(cr - info_left), ct, cl, name, ctrl))
+                        except Exception:
+                            pass
+                    if anchor_candidates:
+                        anchor_candidates.sort(key=lambda x: (x[0], x[1], x[2], x[3]))
+                        best_name = anchor_candidates[0][4]
+                        best_ctrl = anchor_candidates[0][5]
+                        self._cached_chat_title_ctrl = best_ctrl
+                        self._logger.info(f"成功通过聊天信息锚点锁定当前聊天窗口标题: {best_name}")
+                        return best_name
+
+            if msg_bbox:
+                msg_left, msg_top, _, _ = msg_bbox
+                header_top = msg_top - 110
+                header_bottom = msg_top + 22
+                candidates = []
+                for ctrl in _iter_descendants(window, max_depth=18):
+                    try:
+                        if _control_type_name(ctrl) != "TextControl":
+                            continue
+                        name = (getattr(ctrl, "Name", "") or "").strip()
+                        if not name:
+                            continue
+                        if name in ("微信", "聊天信息", "文件传输助手"):
+                            continue
+                        if re.search(r"20\d{2}年\d{1,2}月\d{1,2}日", name):
+                            continue
+                        if re.match(r"^([上下]午)?\s*\d{1,2}:\d{2}(?::\d{2})?$", name):
+                            continue
+                        if re.fullmatch(r"\d{1,2}:\d{2}(:\d{2})?", name):
+                            continue
+                        if name.isdigit():
+                            continue
+                        cbox = utils.rect_to_bbox(getattr(ctrl, "BoundingRectangle", None))
+                        if not cbox:
+                            continue
+                        cl, ct, cr, cb = cbox
+                        if ct < 0 or cb < 0:
+                            continue
+                        if cl < msg_left - 40:
+                            continue
+                        if ct < header_top or cb > header_bottom:
+                            continue
+                        candidates.append((abs(ct - (msg_top - 44)), cl, name, ctrl))
+                    except Exception:
+                        pass
+                if candidates:
+                    candidates.sort(key=lambda x: (x[0], x[1]))
+                    best_name = candidates[0][2]
+                    best_ctrl = candidates[0][3]
+                    self._cached_chat_title_ctrl = best_ctrl
+                    self._logger.info(f"成功通过标题区域锁定当前聊天窗口标题: {best_name}")
+                    return best_name
+        except Exception as e:
+            self._logger.warning(f"获取当前聊天标题异常: {e}")
+
+        return None
 
     def _get_content_root(self, window: Any) -> Any:
         root = window
@@ -1319,49 +1344,129 @@ class WeChatUI:
         if auto is None:
             return None
         
-        # Strategy: Find the largest EditControl in the bottom-right area
-        # The input box is typically large and at the bottom.
-        # Search bar is small and at the top left.
-        
-        candidates = []
-        for ctrl in _iter_descendants(window, max_depth=20):
-            if _control_type_name(ctrl) != "EditControl":
-                continue
+        # 1. 优先使用缓存
+        if self._cached_input_box and self._cached_input_box.Exists(0, 0):
+            return self._cached_input_box
             
-            rect = getattr(ctrl, "BoundingRectangle", None)
-            bbox = utils.rect_to_bbox(rect) if rect is not None else None
-            if bbox is None:
-                continue
-            
-            left, top, right, bottom = bbox
-            width = right - left
-            height = bottom - top
-            
-            # Filter out search bar (usually height ~23, width ~170)
-            if height < 30: 
-                continue
-            
-            # Filter out invisible or tiny controls
-            if width < 100:
-                continue
-
-            candidates.append((width * height, ctrl))
-            
-        if not candidates:
-            # Fallback to Name="输入" if generic search fails
+        # 2. 策略：根据当前聊天标题查找 (EditControl Name通常等于聊天标题)
+        current_title = self.get_current_chat_title(window)
+        if current_title:
             try:
-                return auto.EditControl(searchFromControl=window, searchDepth=15, Name="输入")
-            except:
-                return None
-        
-        # Return the largest EditControl (Input box is usually the largest text area)
-        candidates.sort(key=lambda x: x[0], reverse=True)
-        return candidates[0][1]
+                # 限制搜索范围在右侧面板，或者全局搜索但检查位置
+                # 增加深度以确保能找到
+                edit = auto.EditControl(searchFromControl=window, searchDepth=20, Name=current_title)
+                if edit and edit.Exists(0, 0):
+                    # 校验位置：必须在右侧 (Left > 300) 且有一定宽度
+                    rect = getattr(edit, "BoundingRectangle", None)
+                    bbox = utils.rect_to_bbox(rect)
+                    if bbox:
+                        w = bbox[2] - bbox[0]
+                        if bbox[0] > 300 and w > 300:
+                            self._cached_input_box = edit
+                            return edit
+            except Exception:
+                pass
+
+        # 3. 策略：从右侧主面板向下查找 (最可靠)
+        msg_list = self._locate_message_list(window)
+        if msg_list:
+            try:
+                # msg_list -> chat_body -> right_main
+                # 根据控件树结构，需要往上找几层
+                p1 = msg_list.GetParentControl()
+                if p1:
+                    p2 = p1.GetParentControl() # right_main or container
+                    if p2:
+                        # 在右侧大容器里找 EditControl
+                        # 通常输入框在底部，且尺寸较大
+                        edits = p2.GetChildren() # 这里不能直接GetChildren，需要DeepSearch
+                        # 使用 auto.EditControl 搜索
+                        # 深度设为 10 应该足够
+                        edit = auto.EditControl(searchFromControl=p2, searchDepth=12)
+                        
+                        # 可能找到搜索框(Name='搜索')，需要排除
+                        # 搜索框通常在顶部，输入框在底部
+                        # 如果找到多个，需要遍历筛选
+                        
+                        candidates = []
+                        # 手动遍历 p2 下的 EditControl
+                        for ctrl in _iter_descendants(p2, max_depth=12):
+                            if _control_type_name(ctrl) == "EditControl":
+                                rect = getattr(ctrl, "BoundingRectangle", None)
+                                bbox = utils.rect_to_bbox(rect)
+                                if bbox:
+                                    w = bbox[2] - bbox[0]
+                                    h = bbox[3] - bbox[1]
+                                    t = bbox[1]
+                                    # 排除搜索框 (通常高度较小 < 30 或 宽度较小 < 200，且位置靠上)
+                                    if w > 300 and h > 40:
+                                        candidates.append((t, ctrl))
+                        
+                        if candidates:
+                            # 取 Top 最大的 (最下面的)
+                            candidates.sort(key=lambda x: x[0], reverse=True)
+                            best = candidates[0][1]
+                            self._cached_input_box = best
+                            return best
+            except Exception:
+                pass
+
+        # 4. 策略：启发式查找 (全局遍历，位置+尺寸)
+        try:
+            candidates = []
+            for ctrl in _iter_descendants(window, max_depth=20):
+                if _control_type_name(ctrl) == "EditControl":
+                    rect = getattr(ctrl, "BoundingRectangle", None)
+                    bbox = utils.rect_to_bbox(rect)
+                    if bbox:
+                        l, t, r, b = bbox
+                        w = r - l
+                        h = b - t
+                        # 输入框特征：右侧，宽大
+                        if l > 350 and w > 300 and h > 40:
+                            candidates.append((t, ctrl))
+            
+            if candidates:
+                candidates.sort(key=lambda x: x[0], reverse=True)
+                best = candidates[0][1]
+                self._cached_input_box = best
+                return best
+        except Exception:
+            pass
+            
+        # 5. 旧策略：查找 Name="输入" (兜底)
+        try:
+            edit = auto.EditControl(searchFromControl=window, searchDepth=15, Name="输入")
+            if edit and edit.Exists(0, 0):
+                self._cached_input_box = edit
+                return edit
+        except Exception:
+            pass
+
+        return None
 
     def find_send_button(self, window: Any) -> Optional[Any]:
         if auto is None:
             return None
             
+        # 0. 策略：基于输入框的相对位置查找 (最稳)
+        if self._cached_input_box:
+            try:
+                # 发送按钮通常是输入框的兄弟或叔叔节点，且位置在输入框下方
+                p1 = self._cached_input_box.GetParentControl()
+                if p1:
+                    # 尝试在父节点找
+                    btn = auto.ButtonControl(searchFromControl=p1, searchDepth=5, Name="发送(S)")
+                    if btn.Exists(0, 0): return btn
+                    
+                    # 尝试在爷爷节点找
+                    p2 = p1.GetParentControl()
+                    if p2:
+                        btn = auto.ButtonControl(searchFromControl=p2, searchDepth=8, Name="发送(S)")
+                        if btn.Exists(0, 0): return btn
+            except Exception:
+                pass
+
         roots = []
         content_root = self._get_content_root(window)
         roots.append(content_root)
@@ -1398,44 +1503,51 @@ class WeChatUI:
         return None
 
     def _analyze_item_alignment(self, item: Any, list_bbox: Tuple[int, int, int, int]) -> str:
-        if ImageGrab is None or ImageStat is None:
+        if item is None or list_bbox is None:
             return "other"
             
-        l, _, r, _ = list_bbox
-        
         try:
-            rect = item.BoundingRectangle
-            bbox = (rect.left, rect.top - 5, rect.right, rect.bottom + 5)
+            # 列表中心线
+            list_center_x = (list_bbox[0] + list_bbox[2]) / 2.0
             
-            screenshot = ImageGrab.grab(bbox=bbox)
-            img_w, img_h = screenshot.size
-            
-            zone_w = 70
-            l_zone = screenshot.crop((0, 0, zone_w, img_h))
-            r_zone = screenshot.crop((img_w - zone_w, 0, img_w, img_h))
-            
-            def get_score(region):
-                stat = ImageStat.Stat(region)
-                return sum(stat.stddev) / 3.0
-
-            l_score = get_score(l_zone)
-            r_score = get_score(r_zone)
-            
-            if l_score < 2 and r_score < 2:
-                return "other"
-
-            return "self" if r_score > l_score else "other"
+            # 遍历 ListItem 的子孙节点，寻找头像 Button
+            for ctrl in _iter_descendants(item, max_depth=4):
+                if _control_type_name(ctrl) == "ButtonControl":
+                    rect = getattr(ctrl, "BoundingRectangle", None)
+                    if rect:
+                        width = rect.right - rect.left
+                        height = rect.bottom - rect.top
+                        # 头像通常是正方形按钮，尺寸在 30 到 50 之间
+                        if 30 <= width <= 50 and 30 <= height <= 50:
+                            btn_center_x = (rect.left + rect.right) / 2.0
+                            if btn_center_x > list_center_x:
+                                return "self"
+                            else:
+                                return "other"
+                                
+            # 兜底：如果没找到头像，根据整个 item 的文本重心判断
+            rect = getattr(item, "BoundingRectangle", None)
+            if rect:
+                if ((rect.left + rect.right) / 2.0) > list_center_x:
+                    return "self"
         except Exception:
-            return "other"
+            pass
+            
+        return "other"
 
     def extract_latest_messages(self, contact_hint: str) -> List[Dict[str, Any]]:
         if auto is None: return []
         with self._uia_lock:
             window = self.get_main_window()
             if window is None: return []
+            
             normalized_contact = self._normalize_contact_name(contact_hint)
             if not normalized_contact:
-                normalized_contact = self._normalize_contact_name(self.get_current_chat_title(window) or "")
+                current_title = self.get_current_chat_title(window)
+                if not current_title:
+                    return [] # 拿不到标题直接退出
+                normalized_contact = self._normalize_contact_name(current_title)
+                
             msg_list = self._locate_message_list(window)
             if msg_list is None: return []
             
@@ -1443,37 +1555,25 @@ class WeChatUI:
             if not list_bbox: return []
 
             items = msg_list.GetChildren() or []
-            if not items:
-                # Fallback: manually find list items if GetChildren fails (common in virtualized lists)
-                fallback_items = []
-                for ctrl in _iter_descendants(msg_list, max_depth=10):
-                    ct = _control_type_name(ctrl)
-                    if ct == "ListItemControl" or "ListItem" in getattr(ctrl, "ClassName", ""):
-                        rect = getattr(ctrl, "BoundingRectangle", None)
-                        bbox = utils.rect_to_bbox(rect) if rect is not None else None
-                        if bbox is None:
-                            continue
-                        left, top, right, bottom = bbox
-                        if left < list_bbox[0] or right > list_bbox[2] or top < list_bbox[1] or bottom > list_bbox[3]:
-                            continue
-                        fallback_items.append((top, ctrl))
-                fallback_items.sort(key=lambda x: x[0])
-                items = [it[1] for it in fallback_items]
             if not items: return []
 
             collected_messages = []
-            
             scan_limit = max(5, int(self._cfg.message_scan_limit))
+            
+            # === 新增调试日志：记录总共抓到了多少个节点 ===
+            # self._logger.debug(f"分析 [{normalized_contact}] 的最近 {len(items[-scan_limit:])} 个UI节点...")
+
             for item in items[-scan_limit:]:
                 msg = self._extract_message_from_item(normalized_contact or contact_hint, item)
                 if not msg: continue 
 
                 direction = self._analyze_item_alignment(item, list_bbox)
-                
                 msg['is_self'] = (direction == "self")
                 collected_messages.append(msg)
             
             if collected_messages:
+                # === 新增调试日志：证明成功提取到了有效文本 ===
+                # self._logger.info(f"成功提取了 {len(collected_messages)} 条对话文本")
                 last_msg = collected_messages[-1]
                 if not last_msg.get('is_self', False):
                     last_msg['trigger_reply'] = True
@@ -1488,43 +1588,48 @@ class WeChatUI:
 
         raw_name = (getattr(item, "Name", "") or "").strip()
         
-        # 1. Exclude Timestamps
-        # Matches: "10:28", "昨天 10:28", "2025年7月12日 21:19", "星期二 10:00"
+        # 1. 排除时间戳
         if re.search(r"^(\d{1,2}:\d{2}|昨天|今天|星期|20\d{2}年)", raw_name):
-            # Double check if it's JUST a timestamp
             if re.fullmatch(r"(\d{1,2}:\d{2}|昨天.*|今天.*|星期.*|20\d{2}年.*)", raw_name):
                 return None
         
-        # 2. Exclude System Messages
+        # 2. 排除系统提示
         if "以下是新消息" in raw_name or "以下为新消息" in raw_name:
             return None
         if raw_name in ("查看更多消息", "如果你要查看更多消息"):
             return None
-
-        # 3. Extract Content
-        # Strategy: 
-        # - If Name is "视频号" or "图片", looks for description in children
-        # - If Name is normal text, use it.
         
+        # 排除撤回消息 (系统通知，非用户发言)
+        if "撤回了一条消息" in raw_name:
+            # 进一步确认是否为系统消息（系统消息没有头像按钮）
+            is_system = True
+            if auto:
+                try:
+                    # 正常消息ListItem下会有ButtonControl(头像)
+                    # 结构通常为: ListItem -> Pane -> Button
+                    btn = auto.ButtonControl(searchFromControl=item, searchDepth=4)
+                    if btn.Exists(0, 0):
+                        is_system = False
+                except Exception:
+                    pass
+            
+            if is_system:
+                return None
+
         text_content = raw_name
         
-        # If the ListItem name is generic like "[视频号]", try to dig deeper
+        # 3. 极速提取富文本卡片 (视频号/小程序/链接等)
+        # 不再使用 Python 遍历，改用 UIA 底层 C++ 搜索寻找附带文字
         if raw_name.startswith("[") and raw_name.endswith("]"):
-            found_text = ""
-            # Increase depth to find nested text in rich media cards
-            for ctrl in _iter_descendants(item, max_depth=20):
-                ct = _control_type_name(ctrl)
-                val = (getattr(ctrl, "Name", "") or "").strip()
-                if not val: continue
-                if val == raw_name: continue
-                # Skip button names that might be "Play", "Pause" etc.
-                if ct == "ButtonControl": continue 
-                
-                found_text = val
-                break
-            
-            if found_text:
-                text_content = f"{raw_name} {found_text}"
+            try:
+                # 限制深度为 8，瞬间找出卡片里带的文本（比如：AI-魔方视界）
+                text_ctrl = auto.TextControl(searchFromControl=item, searchDepth=8)
+                if text_ctrl and text_ctrl.Exists(0, 0):
+                    found_text = (text_ctrl.Name or "").strip()
+                    if found_text and found_text != raw_name:
+                        text_content = f"{raw_name} {found_text}"
+            except Exception:
+                pass
 
         if text_content:
              return {"contact": contact_hint, "type": "text", "content": text_content, "timestamp": utils.now_iso(), "ui_id": ui_id}
@@ -1548,14 +1653,17 @@ class WeChatUI:
                 pass
 
             if not self.ensure_chat_target(target):
+                self._logger.warning(f"无法切换到目标会话: {target}")
                 return False
 
             edit = self.find_input_box(window)
             if edit is None:
+                self._logger.warning("未找到输入框，无法发送消息")
                 return False
 
             ok = self._set_edit_value(edit, text)
             if not ok:
+                self._logger.warning("无法在输入框中粘贴文本")
                 return False
 
             time.sleep(random.uniform(0.3, 0.8))
@@ -1568,6 +1676,14 @@ class WeChatUI:
                 except Exception:
                     pass
 
+            # Fallback 1: Alt+S (Common shortcut for Send)
+            try:
+                auto.SendKeys("{Alt}s")
+                return True
+            except:
+                pass
+
+            # Fallback 2: Enter
             try:
                 auto.SendKeys("{Enter}")
                 return True
