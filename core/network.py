@@ -149,6 +149,7 @@ class CommandHandler(BaseHTTPRequestHandler):
             
             ui: "WeChatUI" = getattr(self.server, "ui")
             logger: logging.Logger = getattr(self.server, "logger")
+            listener = getattr(self.server, "listener", None)
 
             if action == "marketing_like":
                 config = data.get("config") or {}
@@ -194,6 +195,22 @@ class CommandHandler(BaseHTTPRequestHandler):
                     self._json_response(HTTPStatus.INTERNAL_SERVER_ERROR, {"ok": False, "error": "marketing_comment_failed"})
                 return
 
+            if action == "set_managed_mode":
+                mode = str(data.get("mode") or "").strip().lower()
+                if mode not in ("full", "semi"):
+                    self._json_response(HTTPStatus.BAD_REQUEST, {"ok": False, "error": "invalid_managed_mode"})
+                    return
+                if listener is None or not hasattr(listener, "set_managed_mode"):
+                    self._json_response(HTTPStatus.SERVICE_UNAVAILABLE, {"ok": False, "error": "listener_unavailable"})
+                    return
+                try:
+                    listener.set_managed_mode(mode)
+                    self._json_response(HTTPStatus.OK, {"ok": True, "managedMode": mode})
+                except Exception as e:
+                    logger.warning("设置托管模式失败: %s", e)
+                    self._json_response(HTTPStatus.INTERNAL_SERVER_ERROR, {"ok": False, "error": "set_mode_failed"})
+                return
+
             if not target:
                 self._json_response(HTTPStatus.BAD_REQUEST, {"ok": False, "error": "target_required"})
                 return
@@ -229,6 +246,12 @@ class CommandServer:
         self._state_provider = state_provider
         self._httpd: Optional[ThreadingHTTPServer] = None
         self._thread: Optional[threading.Thread] = None
+        self._listener = None
+
+    def set_listener(self, listener: Any) -> None:
+        self._listener = listener
+        if self._httpd is not None:
+            setattr(self._httpd, "listener", listener)
 
     def start(self) -> None:
         httpd = ThreadingHTTPServer((self._host, self._port), CommandHandler)
@@ -236,6 +259,7 @@ class CommandServer:
         setattr(httpd, "poller", self._poller)
         setattr(httpd, "logger", self._logger)
         setattr(httpd, "state_provider", self._state_provider)
+        setattr(httpd, "listener", self._listener)
         
         full_state = _load_state_from_file()
         setattr(httpd, "marketing_like_state", full_state.get("like", {}))

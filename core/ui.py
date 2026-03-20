@@ -1099,7 +1099,7 @@ class WeChatUI:
     def _is_session_item_unread(self, item: Any) -> bool:
         item_name = getattr(item, "Name", "") or ""
         
-        if item_name in ("服务号", "订阅号", "Subscription Accounts", "订阅号消息"):
+        if item_name in ("服务号", "订阅号", "Subscription Accounts", "订阅号消息", "公众号", "文件传输助手"):
             return False
             
         if re.search(r"(\[\d+条\]|\d+条新消息|未读)", item_name):
@@ -1127,7 +1127,7 @@ class WeChatUI:
         if auto is None or window is None:
             return False
             
-        targets = ["服务号", "订阅号", "Subscription Accounts", "订阅号消息"]
+        targets = ["服务号", "订阅号", "Subscription Accounts", "订阅号消息", "公众号"]
         for name in targets:
             try:
                 btn = auto.ButtonControl(searchFromControl=window, searchDepth=12, Name=name)
@@ -1149,6 +1149,11 @@ class WeChatUI:
             return None
         with self._uia_lock:
             name = self._normalize_contact_name((getattr(item, "Name", "") or ""))
+            
+            if name in ("服务号", "订阅号", "Subscription Accounts", "订阅号消息", "公众号", "文件传输助手"):
+                self._logger.info(f"跳过聚合类/特殊会话: {name}")
+                return None
+                
             try:
                 # Use _click_control for robust clicking
                 if self._click_control(item):
@@ -1178,6 +1183,10 @@ class WeChatUI:
                 return False
 
             target_name = self._normalize_contact_name(target)
+            if target_name in ("服务号", "订阅号", "Subscription Accounts", "订阅号消息", "公众号", "文件传输助手"):
+                self._logger.info(f"拒绝向聚合类/特殊会话发送消息: {target_name}")
+                return False
+                
             current = self.get_current_chat_title(window)
             current_name = self._normalize_contact_name(current or "")
             
@@ -1559,11 +1568,10 @@ class WeChatUI:
 
             collected_messages = []
             scan_limit = max(5, int(self._cfg.message_scan_limit))
-            
-            # === 新增调试日志：记录总共抓到了多少个节点 ===
-            # self._logger.debug(f"分析 [{normalized_contact}] 的最近 {len(items[-scan_limit:])} 个UI节点...")
+            scan_items = items[-scan_limit:]
+            self._logger.info("开始提取最新消息: 会话=%s, 总节点=%d, 扫描节点=%d", normalized_contact, len(items), len(scan_items))
 
-            for item in items[-scan_limit:]:
+            for item in scan_items:
                 msg = self._extract_message_from_item(normalized_contact or contact_hint, item)
                 if not msg: continue 
 
@@ -1572,11 +1580,13 @@ class WeChatUI:
                 collected_messages.append(msg)
             
             if collected_messages:
-                # === 新增调试日志：证明成功提取到了有效文本 ===
-                # self._logger.info(f"成功提取了 {len(collected_messages)} 条对话文本")
+                self._logger.info("提取消息完成: 会话=%s, 有效消息=%d", normalized_contact, len(collected_messages))
                 last_msg = collected_messages[-1]
                 if not last_msg.get('is_self', False):
                     last_msg['trigger_reply'] = True
+            else:
+                sample_names = [((getattr(node, "Name", "") or "").strip())[:40] for node in scan_items]
+                self._logger.warning("提取消息为空: 会话=%s, 最近节点样本=%s", normalized_contact, sample_names)
             
             return collected_messages
 
@@ -1587,16 +1597,22 @@ class WeChatUI:
             ui_id = None
 
         raw_name = (getattr(item, "Name", "") or "").strip()
+        if not raw_name:
+            return None
         
         # 1. 排除时间戳
-        if re.search(r"^(\d{1,2}:\d{2}|昨天|今天|星期|20\d{2}年)", raw_name):
-            if re.fullmatch(r"(\d{1,2}:\d{2}|昨天.*|今天.*|星期.*|20\d{2}年.*)", raw_name):
-                return None
+        if self._is_time_separator_text(raw_name):
+            return None
         
         # 2. 排除系统提示
-        if "以下是新消息" in raw_name or "以下为新消息" in raw_name:
+        if self._is_new_message_divider(raw_name):
+            self._logger.info("消息过滤-新消息分隔提示: %s", raw_name[:80])
             return None
         if raw_name in ("查看更多消息", "如果你要查看更多消息"):
+            self._logger.info("消息过滤-历史消息入口: %s", raw_name)
+            return None
+        if ("你已添加了" in raw_name and "现在可以开始聊天了" in raw_name) or "以上是打招呼的内容" in raw_name:
+            self._logger.info("消息过滤-打招呼系统提示: %s", raw_name[:80])
             return None
         
         # 排除撤回消息 (系统通知，非用户发言)
@@ -1614,6 +1630,7 @@ class WeChatUI:
                     pass
             
             if is_system:
+                self._logger.info("消息过滤-撤回系统提示: %s", raw_name[:80])
                 return None
 
         text_content = raw_name
@@ -1635,6 +1652,27 @@ class WeChatUI:
              return {"contact": contact_hint, "type": "text", "content": text_content, "timestamp": utils.now_iso(), "ui_id": ui_id}
         
         return None
+
+    def _is_new_message_divider(self, text: str) -> bool:
+        normalized = re.sub(r"\s+", "", text or "")
+        if not normalized:
+            return False
+        normalized = normalized.strip("：:。.!！?？-—_~～·•|｜")
+        return normalized in ("以下是新消息", "以下为新消息", "以下是最新消息", "以下为最新消息")
+
+    def _is_time_separator_text(self, text: str) -> bool:
+        normalized = re.sub(r"\s+", "", text or "")
+        if not normalized:
+            return False
+        if re.fullmatch(r"\d{1,2}:\d{2}(:\d{2})?", normalized):
+            return True
+        if re.fullmatch(r"(今天|昨天)(\d{1,2}:\d{2}(:\d{2})?)?", normalized):
+            return True
+        if re.fullmatch(r"星期[一二三四五六日天]([上下]午)?\d{1,2}:\d{2}(:\d{2})?", normalized):
+            return True
+        if re.fullmatch(r"20\d{2}年\d{1,2}月\d{1,2}日([上下]午)?\d{1,2}:\d{2}(:\d{2})?", normalized):
+            return True
+        return False
 
     def set_text_and_send(self, target: str, text: str) -> bool:
         if auto is None:
