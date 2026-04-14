@@ -153,8 +153,41 @@ class WeChatUI:
         if parts:
             name = parts[0]
         name = re.sub(r"\s+", " ", name).strip()
+        name = re.sub(r"(?i)^new\b[\s:：\-]*", "", name).strip()
+        name = re.sub(r"\s*[|｜·•\-—:：]\s*$", "", name).strip()
+        name = re.sub(r"\s*(?:[上下]午)?\s*\d{1,2}:\d{2}(?::\d{2})?$", "", name).strip()
         name = re.sub(r"(?:\d+\s*条新消息|未读)$", "", name).strip()
         return name
+
+    def _is_invalid_chat_title_candidate(self, name: str) -> bool:
+        normalized = self._normalize_contact_name(name)
+        if not normalized:
+            return True
+        if len(normalized) > 60:
+            return True
+        blocked = {
+            "微信",
+            "聊天信息",
+            "文件传输助手",
+            "搜索",
+            "发起群聊",
+            "置顶",
+            "最小化",
+            "最大化",
+            "关闭",
+            "聊天",
+            "通讯录",
+            "收藏",
+            "朋友圈",
+            "看一看",
+            "搜一搜",
+            "设置及其他",
+            "语音聊天",
+            "视频聊天",
+            "发送",
+            "发送(S)",
+        }
+        return normalized in blocked
 
     def _brief_control(self, ctrl: Any) -> str:
         return f"{_control_type_name(ctrl)}|{_safe_attr(ctrl, 'ClassName')}|{_safe_attr(ctrl, 'Name')}|{_rect_text(ctrl)}"
@@ -1231,8 +1264,10 @@ class WeChatUI:
             try:
                 if self._cached_chat_title_ctrl.Exists(0, 0):
                     name = (getattr(self._cached_chat_title_ctrl, "Name", "") or "").strip()
-                    if name and name not in ("微信", "文件传输助手", "聊天信息"):
-                        return name
+                    if not self._is_invalid_chat_title_candidate(name):
+                        normalized_name = self._normalize_contact_name(name)
+                        if normalized_name:
+                            return normalized_name
             except Exception:
                 pass
             self._cached_chat_title_ctrl = None
@@ -1248,18 +1283,19 @@ class WeChatUI:
                     info_left, info_top, _, info_bottom = info_bbox
                     anchor_top = info_top - 18
                     anchor_bottom = info_bottom + 18
-                    anchor_left_limit = (msg_bbox[0] - 40) if msg_bbox else 500
+                    anchor_left_limit = (msg_bbox[0] + 8) if msg_bbox else 500
                     anchor_right_limit = info_left + 6
 
                     anchor_candidates = []
                     for ctrl in _iter_descendants(window, max_depth=18):
                         try:
-                            if _control_type_name(ctrl) != "TextControl":
+                            ctype = _control_type_name(ctrl)
+                            if ctype not in ("TextControl", "ButtonControl"):
                                 continue
                             name = (getattr(ctrl, "Name", "") or "").strip()
                             if not name:
                                 continue
-                            if name in ("微信", "聊天信息", "文件传输助手"):
+                            if self._is_invalid_chat_title_candidate(name):
                                 continue
                             if re.search(r"20\d{2}年\d{1,2}月\d{1,2}日", name):
                                 continue
@@ -1279,12 +1315,16 @@ class WeChatUI:
                                 continue
                             if cb < anchor_top or ct > anchor_bottom:
                                 continue
+                            if cb - ct > 50:
+                                continue
                             anchor_candidates.append((abs(ct - info_top), abs(cr - info_left), ct, cl, name, ctrl))
                         except Exception:
                             pass
                     if anchor_candidates:
                         anchor_candidates.sort(key=lambda x: (x[0], x[1], x[2], x[3]))
-                        best_name = anchor_candidates[0][4]
+                        best_name = self._normalize_contact_name(anchor_candidates[0][4])
+                        if not best_name:
+                            return None
                         best_ctrl = anchor_candidates[0][5]
                         self._cached_chat_title_ctrl = best_ctrl
                         self._logger.info(f"成功通过聊天信息锚点锁定当前聊天窗口标题: {best_name}")
@@ -1293,16 +1333,17 @@ class WeChatUI:
             if msg_bbox:
                 msg_left, msg_top, _, _ = msg_bbox
                 header_top = msg_top - 110
-                header_bottom = msg_top + 22
+                header_bottom = msg_top + 5
                 candidates = []
                 for ctrl in _iter_descendants(window, max_depth=18):
                     try:
-                        if _control_type_name(ctrl) != "TextControl":
+                        ctype = _control_type_name(ctrl)
+                        if ctype not in ("TextControl", "ButtonControl"):
                             continue
                         name = (getattr(ctrl, "Name", "") or "").strip()
                         if not name:
                             continue
-                        if name in ("微信", "聊天信息", "文件传输助手"):
+                        if self._is_invalid_chat_title_candidate(name):
                             continue
                         if re.search(r"20\d{2}年\d{1,2}月\d{1,2}日", name):
                             continue
@@ -1318,16 +1359,20 @@ class WeChatUI:
                         cl, ct, cr, cb = cbox
                         if ct < 0 or cb < 0:
                             continue
-                        if cl < msg_left - 40:
+                        if cl < msg_left + 8:
                             continue
                         if ct < header_top or cb > header_bottom:
+                            continue
+                        if cb - ct > 50:
                             continue
                         candidates.append((abs(ct - (msg_top - 44)), cl, name, ctrl))
                     except Exception:
                         pass
                 if candidates:
                     candidates.sort(key=lambda x: (x[0], x[1]))
-                    best_name = candidates[0][2]
+                    best_name = self._normalize_contact_name(candidates[0][2])
+                    if not best_name:
+                        return None
                     best_ctrl = candidates[0][3]
                     self._cached_chat_title_ctrl = best_ctrl
                     self._logger.info(f"成功通过标题区域锁定当前聊天窗口标题: {best_name}")

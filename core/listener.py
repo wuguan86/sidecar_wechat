@@ -31,6 +31,42 @@ class Listener:
         self._managed_mode = normalized
         self._logger.info("托管模式已切换为: %s", self._managed_mode)
 
+    def prime_initial_state(self) -> None:
+        primed_contacts = set()
+        try:
+            window = self._ui.get_main_window()
+            if window is None:
+                self._logger.warning("启动预热失败：未找到微信主窗口")
+                return
+
+            original_contact = self._ui._normalize_contact_name(self._ui.get_current_chat_title(window) or "")
+            if self._snapshot_contact(original_contact):
+                primed_contacts.add(original_contact)
+
+            if self._managed_mode == "full":
+                unread_items = self._ui.find_unread_sessions()
+                self._logger.info("启动预热发现 %d 个未读会话，开始建立历史基线", len(unread_items))
+                for item in unread_items:
+                    try:
+                        contact = self._ui.click_session_item(item)
+                        contact = self._ui._normalize_contact_name(contact or "")
+                        if not contact or contact in primed_contacts:
+                            continue
+                        if self._snapshot_contact(contact):
+                            primed_contacts.add(contact)
+                    except Exception as e:
+                        self._logger.warning("启动预热未读会话失败: %s", e)
+
+                if original_contact:
+                    try:
+                        self._ui.ensure_chat_target(original_contact)
+                    except Exception as e:
+                        self._logger.warning("启动预热恢复原会话失败: %s", e)
+
+            self._logger.info("启动预热完成，已建立 %d 个会话基线", len(primed_contacts))
+        except Exception as e:
+            self._logger.warning("启动预热异常: %s", e)
+
     def process_cycle(self) -> None:
         try:
             # self._logger.debug("进入处理循环 (process_cycle)")
@@ -152,3 +188,22 @@ class Listener:
             if previous[-size:] == current[:size]:
                 return size
         return 0
+
+    def _snapshot_contact(self, contact: str) -> bool:
+        normalized_contact = self._ui._normalize_contact_name(contact)
+        if not normalized_contact:
+            return False
+        if normalized_contact in ("服务号", "订阅号", "Subscription Accounts", "订阅号消息", "公众号", "文件传输助手"):
+            return False
+
+        messages = self._ui.extract_latest_messages(normalized_contact)
+        if not messages:
+            self._logger.info("启动预热跳过空会话: %s", normalized_contact)
+            return False
+
+        current_fingerprints = [self._message_fingerprint(msg) for msg in messages]
+        self._last_fingerprints_by_contact[normalized_contact] = current_fingerprints
+        if len(self._last_fingerprints_by_contact) > 300:
+            self._last_fingerprints_by_contact.clear()
+        self._logger.info("启动预热建立会话基线: %s, 消息数=%d", normalized_contact, len(messages))
+        return True

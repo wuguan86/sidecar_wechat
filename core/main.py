@@ -245,6 +245,7 @@ def main() -> int:
 
     wait_for_wechat_window()
     listener_inst = Listener(cfg, ui_inst, logger_inst, poller)
+    listener_inst.prime_initial_state()
     server.set_listener(listener_inst)
     readiness_state["listenerReady"] = True
     logger_inst.info("wechat_bridge 已启动 (监听模式) - 适配版本 3.9.12")
